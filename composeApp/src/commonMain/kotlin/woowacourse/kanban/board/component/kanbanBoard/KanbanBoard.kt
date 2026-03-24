@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,15 +25,6 @@ import androidx.compose.ui.window.Dialog
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import woowacourse.kanban.board.component.dialog.TaskCreateDialog
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_TITLE_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_TITLE_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_TITLE_COLOR
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
@@ -41,9 +33,7 @@ import woowacourse.kanban.board.model.Tag
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
-fun KanbanBoard(modifier: Modifier = Modifier) {
-    val kanbanBoardData = remember { KanbanBoardData() }
-
+fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier) {
     val statuses = remember { Status.entries }
 
     val names = remember { listOf("다이노", "페임스") }
@@ -87,9 +77,10 @@ fun KanbanBoard(modifier: Modifier = Modifier) {
 
     Box {
         Column(
-            modifier = modifier.background(color = Color.White),
+            modifier = modifier.fillMaxSize().background(color = Color.White),
         ) {
             KanbanBoardTitleBar(
+                title = kanbanBoardData.title,
                 progress = kanbanBoardData.progress(),
                 doneCount = kanbanBoardData.doneCount(),
                 totalStatusCount = kanbanBoardData.totalStatusCount(),
@@ -144,5 +135,5 @@ fun KanbanBoard(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun KanbanBoardPreview() {
-    KanbanBoard()
+    KanbanBoard(kanbanBoardData = KanbanBoardData(title = "Compose1"))
 }

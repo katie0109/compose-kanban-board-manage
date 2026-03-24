@@ -28,7 +28,7 @@ import woowacourse.kanban.board.constant.KANBANBOARD_CREATE_BUTTON_COLOR
 import woowacourse.kanban.board.constant.KANBANBOARD_TITLE_COLOR
 
 @Composable
-fun KanbanBoardTitleBar(modifier: Modifier = Modifier, progress: Float, doneCount: Int, totalStatusCount: Int, onCreateClick: () -> Unit) {
+fun KanbanBoardTitleBar(modifier: Modifier = Modifier, title: String, progress: Float, doneCount: Int, totalStatusCount: Int, onCreateClick: () -> Unit) {
     Column(
         modifier = modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
@@ -41,7 +41,7 @@ fun KanbanBoardTitleBar(modifier: Modifier = Modifier, progress: Float, doneCoun
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    "Compose Desktop 칸반 보드",
+                    title,
                     color = Color(KANBANBOARD_TITLE_COLOR),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.W500,
@@ -95,5 +95,5 @@ private fun ProjectProgress(progress: Float) {
 @Preview(showBackground = true, widthDp = 500)
 @Composable
 private fun KanbanBoardTitleBarPreview() {
-    KanbanBoardTitleBar(progress = 0f, doneCount = 0, totalStatusCount = 0, onCreateClick = {})
+    KanbanBoardTitleBar(title = "Compose1", progress = 0f, doneCount = 0, totalStatusCount = 0, onCreateClick = {})
 }

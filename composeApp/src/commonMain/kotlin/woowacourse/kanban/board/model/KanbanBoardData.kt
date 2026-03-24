@@ -1,6 +1,9 @@
 package woowacourse.kanban.board.model
 
-data class KanbanBoardData(private val boardList: MutableList<BoardData> = mutableListOf()) {
+data class KanbanBoardData(
+    val title: String,
+    private val boardList: MutableList<BoardData> = mutableListOf()
+) {
     fun totalStatusCount(): Int = boardList.size
     fun doneCount(): Int = boardList.count { it.status == Status.DONE }
 
