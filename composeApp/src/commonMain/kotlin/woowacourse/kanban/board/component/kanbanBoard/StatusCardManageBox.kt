@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.component.card.KanbanBoardTemplate
+import woowacourse.kanban.board.component.card.TaskCard
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
@@ -95,7 +95,7 @@ fun StatusCardManageBox(boardList: List<BoardData>, status: Status, statusColor:
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 boardList.indices.forEach { index ->
-                    KanbanBoardTemplate(boardList[index])
+                    TaskCard(boardList[index])
                     if (index != boardList.lastIndex) Box(modifier = Modifier.height(12.dp))
                 }
             }

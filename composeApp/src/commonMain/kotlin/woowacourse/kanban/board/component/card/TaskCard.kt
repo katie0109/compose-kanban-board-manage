@@ -29,9 +29,9 @@ import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
 @Composable
-fun KanbanBoardTemplate(board: BoardData) {
+fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(15.dp))
             .background(color = Color.White)
             .border(
@@ -104,5 +104,5 @@ private class BoardPreviewParameterProvider : PreviewParameterProvider<BoardData
 @Preview(showBackground = true)
 @Composable
 private fun BoardScreenView(@PreviewParameter(BoardPreviewParameterProvider::class) board: BoardData) {
-    KanbanBoardTemplate(board)
+    TaskCard(board)
 }

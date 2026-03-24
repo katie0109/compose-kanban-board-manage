@@ -13,7 +13,7 @@ import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
 @OptIn(ExperimentalTestApi::class)
-class BoardTest {
+class TaskCardTest {
 
     private fun createBoard(
         title: String = DEFAULT_TITLE,
@@ -31,7 +31,7 @@ class BoardTest {
 
     @Composable
     private fun CreateUi(board: BoardData) {
-        KanbanBoardTemplate(board)
+        TaskCard(board)
     }
 
     @Test

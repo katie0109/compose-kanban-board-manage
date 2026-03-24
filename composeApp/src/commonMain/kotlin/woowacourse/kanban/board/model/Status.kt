@@ -1,14 +1,6 @@
 package woowacourse.kanban.board.model
 
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.DONE_CARD_BOX_TITLE_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.IN_PROGRESS_CARD_BOX_TITLE_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_TITLE_COLOR
+import woowacourse.kanban.board.constant.*
 
 enum class Status(val state: String) {
     TODO("To Do"),
