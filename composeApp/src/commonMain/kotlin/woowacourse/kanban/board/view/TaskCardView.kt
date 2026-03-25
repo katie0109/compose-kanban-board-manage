@@ -30,7 +30,7 @@ fun TaskCardView(
             // 1) 카드가 화면 어디에 있는지 추적 (스크롤 대응을 위해 상태로 관리)
             .onGloballyPositioned { cardWindowPosition = it.positionInWindow() }
             // 2) 드래그 제스처 감지
-            .pointerInput(Unit) {
+            .pointerInput(boardData.id) {
                 detectDragGestures(
                     onDragStart = { onDragStart() },
                     onDrag = { change, _ ->

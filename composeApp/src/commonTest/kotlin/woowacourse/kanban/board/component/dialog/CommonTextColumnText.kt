@@ -1,16 +1,10 @@
 package woowacourse.kanban.board.component.dialog
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import org.assertj.core.api.Assertions.assertThat
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Tag
 import woowacourse.kanban.board.state.BoardDataState
 import kotlin.test.Test
 

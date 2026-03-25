@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.component.card.TaskCard
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
@@ -127,13 +127,16 @@ fun StatusCardManageBox(
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                boardList.indices.forEach { index ->
-                    TaskCardView(
-                        boardList[index], onDragStart = { onTaskDragStart(boardList[index]) },
-                        onDragChange = onTaskDragChange,
-                        onDragEnd = onTaskDragEnd,
-                        onDragCancel = onTaskDragCancel,
-                    )
+                boardList.forEachIndexed { index, boardData ->
+                    key(boardData.id) {
+                        TaskCardView(
+                            boardData,
+                            onDragStart = { onTaskDragStart(boardData) },
+                            onDragChange = onTaskDragChange,
+                            onDragEnd = onTaskDragEnd,
+                            onDragCancel = onTaskDragCancel,
+                        )
+                    }
                     if (index != boardList.lastIndex) Box(modifier = Modifier.height(12.dp))
                 }
             }

@@ -36,13 +36,20 @@ import woowacourse.kanban.board.model.Tag
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
-fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier) {
+fun KanbanBoard(
+    kanbanBoardData: KanbanBoardData,
+    modifier: Modifier = Modifier,
+    onAddBoardData: (BoardData) -> Unit = {},
+    onMoveBoardDataStatus: (Int, Status) -> Unit = { _, _ -> },
+) {
     val statuses = remember { Status.entries }
 
     val names = remember { listOf("다이노", "페임스") }
 
     var showDialog by remember { mutableStateOf(false) }
     var isShowSnackBar by remember { mutableStateOf(false) }
+
+    var text by remember { mutableStateOf("새로운 태스크가 생성되었습니다.") }
 
     fun onCreateClick() {
         showDialog = true
@@ -66,7 +73,7 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
             status = boardDataState.statusValue,
             nickname = boardDataState.nameValue,
         )
-        kanbanBoardData.addBoardData(boardData)
+        onAddBoardData(boardData)
     }
 
     suspend fun showSnackBar() {
@@ -78,9 +85,10 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
         isShowSnackBar = false
     }
 
-    var draggedTask by remember { mutableStateOf<BoardData?>(null) }
+    var draggedTaskId by remember { mutableStateOf<Int?>(null) }
     var currentDragPosition by remember { mutableStateOf<Offset?>(null) }
     val columnBounds = remember { mutableStateMapOf<Status, Rect>() }
+    var draggedTaskSourceStatus by remember { mutableStateOf<Status?>(null) }
 
     Box {
         Column(
@@ -106,25 +114,33 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
                             currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
                         },
                         onBoundsChanged = { rect -> columnBounds[status] = rect },
-                        onTaskDragStart = { task -> draggedTask = task },
+                        onTaskDragStart = { task ->
+                            draggedTaskId = task.id
+                            draggedTaskSourceStatus = task.status
+                      },
                         onTaskDragChange = { pos -> currentDragPosition = pos },
                         onTaskDragEnd = {
-                            val dropPosition = currentDragPosition ?: return@StatusCardManageBox
+                            val dropPosition = currentDragPosition ?: run {
+                                draggedTaskId = null
+                                return@StatusCardManageBox
+                            }
                             val targetStatus = columnBounds.entries
                                 .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
 
-                            draggedTask?.let { task ->
-                                if (targetStatus != null && task.status != targetStatus) {
-                                    val idx = kanbanBoardData.getBoardList().indexOfFirst { it.id == task.id }
-                                    if (idx != -1) kanbanBoardData.getBoardList()[idx] = kanbanBoardData.getBoardList()[idx].copy(status = targetStatus)
+                            if (targetStatus != null && draggedTaskId != null) {
+                                if (targetStatus != draggedTaskSourceStatus) {
+                                    text = "태스크가 이동되었습니다."
+                                    isShowSnackBar = true
                                 }
+                                onMoveBoardDataStatus(draggedTaskId!!, targetStatus)
                             }
                             currentDragPosition = null
-                            draggedTask = null
+                            draggedTaskId = null
+                            draggedTaskSourceStatus = null
                         },
                         onTaskDragCancel = {
                             currentDragPosition = null
-                            draggedTask = null
+                            draggedTaskId = null
                         },
                     )
                 }
@@ -140,6 +156,7 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
                         onTaskCreate = {
                             onTaskCreate(it)
                             onDismissRequest()
+                            text = "새로운 태스크가 생성되었습니다."
                             onShowSnackBar()
                         },
                         onDismissRequest = { onDismissRequest() },
@@ -157,7 +174,7 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
                 .padding(start = 16.dp)
                 .size(width = 344.dp, height = 48.dp)
                 .align(alignment = Alignment.BottomCenter),
-            text = "새로운 태스크가 추가되었습니다.",
+            text = text,
             onClick = { onSnackBarCancelClick() },
         )
     }
