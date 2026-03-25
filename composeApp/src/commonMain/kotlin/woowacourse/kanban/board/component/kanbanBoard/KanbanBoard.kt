@@ -12,12 +12,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,6 +78,10 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
         isShowSnackBar = false
     }
 
+    var draggedTask by remember { mutableStateOf<BoardData?>(null) }
+    var currentDragPosition by remember { mutableStateOf<Offset?>(null) }
+    val columnBounds = remember { mutableStateMapOf<Status, Rect>() }
+
     Box {
         Column(
             modifier = modifier.fillMaxSize().background(color = Color.White),
@@ -95,6 +102,30 @@ fun KanbanBoard(kanbanBoardData: KanbanBoardData, modifier: Modifier = Modifier)
                         boardList = kanbanBoardData.getStatusBoard(status),
                         status = status,
                         statusColor = StatusColor.getStatusColor(status),
+                        getIsDropTarget = {
+                            currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
+                        },
+                        onBoundsChanged = { rect -> columnBounds[status] = rect },
+                        onTaskDragStart = { task -> draggedTask = task },
+                        onTaskDragChange = { pos -> currentDragPosition = pos },
+                        onTaskDragEnd = {
+                            val dropPosition = currentDragPosition ?: return@StatusCardManageBox
+                            val targetStatus = columnBounds.entries
+                                .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
+
+                            draggedTask?.let { task ->
+                                if (targetStatus != null && task.status != targetStatus) {
+                                    val idx = kanbanBoardData.getBoardList().indexOfFirst { it.id == task.id }
+                                    if (idx != -1) kanbanBoardData.getBoardList()[idx] = kanbanBoardData.getBoardList()[idx].copy(status = targetStatus)
+                                }
+                            }
+                            currentDragPosition = null
+                            draggedTask = null
+                        },
+                        onTaskDragCancel = {
+                            currentDragPosition = null
+                            draggedTask = null
+                        },
                     )
                 }
             }

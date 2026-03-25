@@ -4,6 +4,7 @@ data class KanbanBoardData(
     val title: String,
     private val boardList: MutableList<BoardData> = mutableListOf()
 ) {
+    fun getBoardList(): MutableList<BoardData> = boardList
     fun totalStatusCount(): Int = boardList.size
     fun doneCount(): Int = boardList.count { it.status == Status.DONE }
 
