@@ -1,6 +1,7 @@
 package woowacourse.kanban.board.model
 
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
@@ -10,7 +11,7 @@ import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
 
 class KanbanBoardDataTest {
-    private val boardList = mutableListOf(
+    private val boardList = listOf(
         BoardData(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
@@ -44,6 +45,12 @@ class KanbanBoardDataTest {
         ),
     )
 
+    private val kanbanBoardData = KanbanBoardData(
+        title = "Compose1", boardList = boardList,
+    )
+
+    private val targetCard = kanbanBoardData.boardList[0]
+
     @Test
     fun `태스크 전체 개수를 알고 있다`() {
         val kanbanBoardData = KanbanBoardData(
@@ -70,5 +77,12 @@ class KanbanBoardDataTest {
         )
 
         Assertions.assertThat(kanbanBoardData.progress()).isEqualTo(0.2f)
+    }
+
+    @Test
+    fun `상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+
+        assertThat(changeKanbanBoardData.boardList[0].status).isEqualTo(Status.IN_PROGRESS)
     }
 }

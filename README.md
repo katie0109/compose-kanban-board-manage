@@ -17,7 +17,7 @@
 
 ## 테스트 시나리오
 
-- [ ] 상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다.
+- [x] 상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다.
 - [ ] 상태를 To-Do에서 Done으로 옮겼을 때 doneCount가 증가한다.
 - [ ] 상태를 To-Do에서 In Progress로 변경했을 때 완료율은 변하지 않는다.
 
