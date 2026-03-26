@@ -117,7 +117,7 @@ fun KanbanBoard(
                         onTaskDragStart = { task ->
                             draggedTaskId = task.id
                             draggedTaskSourceStatus = task.status
-                      },
+                        },
                         onTaskDragChange = { pos -> currentDragPosition = pos },
                         onTaskDragEnd = {
                             val dropPosition = currentDragPosition ?: run {

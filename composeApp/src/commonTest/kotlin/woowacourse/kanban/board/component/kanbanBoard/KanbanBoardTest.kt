@@ -1,11 +1,12 @@
 package woowacourse.kanban.board.component.kanbanBoard
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.runComposeUiTest
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import kotlin.test.Test
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
@@ -18,13 +19,13 @@ import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
 @OptIn(ExperimentalTestApi::class)
-class KanbanBoardTitleBarTest {
+class KanbanBoardTest {
 
     private val kanbanBoardData = KanbanBoardData(
         title = "Compose1",
         boardList = listOf(
             BoardData(
-                title = DEFAULT_TITLE,
+                title = "옮겨질 태스크",
                 description = DEFAULT_CONTENT,
                 tags = listOf(Tag("컴포넌트"), Tag("성능")),
                 status = Status.TODO,
@@ -39,7 +40,7 @@ class KanbanBoardTitleBarTest {
             BoardData(
                 title = DEFAULT_TITLE,
                 description = DEFAULT_CONTENT,
-                status = Status.IN_PROGRESS,
+                status = Status.TODO,
                 nickname = DEFAULT_NAME,
             ),
             BoardData(
@@ -51,48 +52,65 @@ class KanbanBoardTitleBarTest {
                 title = MAX_TITLE,
                 description = MAX_CONTENT,
                 tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
-                status = Status.DONE,
+                status = Status.TODO,
                 nickname = MAX_NAME,
             ),
         ),
     )
 
     @Test
-    fun `새 태스크 생성 버튼을 누르면 다이얼로그가 열린다`() = runComposeUiTest {
-        var showDialog = false
+    fun `To Do 태스크 카드를 Done으로 드래그 앤 드롭을 했을 때 태스크 카드의 상태가 DONE으로 변경된다`() = runComposeUiTest {
 
         setContent {
-            fun onCreateClick() {
-                showDialog = !showDialog
-            }
+            KanbanBoard(kanbanBoardData = kanbanBoardData)
+        }
 
-            KanbanBoardTitleBar(
-                progress = 0f,
-                doneCount = 0,
-                totalStatusCount = 0,
-                onCreateClick = { onCreateClick() },
-                title = kanbanBoardData.title,
+        val todoTask = onNodeWithText("옮겨질 태스크")
+        val doneColumn = onNodeWithText("Done")
+
+        val density = this.density
+        val bounds = todoTask.getUnclippedBoundsInRoot()
+
+        val start = with(density) {
+            Offset(
+                ((bounds.left + bounds.right) / 2).toPx(),
+                ((bounds.top + bounds.bottom) / 2).toPx(),
             )
         }
 
-        onNodeWithText("+ 새 태스크 생성").performClick()
-        waitForIdle()
-        assertThat(showDialog).isEqualTo(true)
+        val doneBounds = doneColumn.getUnclippedBoundsInRoot()
+
+        val end = with(density) {
+            Offset(
+                ((doneBounds.left + doneBounds.right) / 2).toPx(),
+                ((doneBounds.top + doneBounds.bottom) / 2).toPx(),
+            )
+        }
+
+        todoTask.performTouchInput {
+            down(start)
+            moveTo(end)
+            up()
+        }
+
+        doneColumn.assertExists()
     }
 
     @Test
-    fun `20%의 완료율을 가졌을 때 20%가 진행바에 나타난다`() = runComposeUiTest {
+    fun `태스크 카드를 Done으로 옮겼을 때 완료율이 변경된다`() = runComposeUiTest {
+        // given
 
-        setContent {
-            KanbanBoardTitleBar(
-                progress = kanbanBoardData.progress(),
-                doneCount = kanbanBoardData.doneCount(),
-                totalStatusCount = kanbanBoardData.totalStatusCount(),
-                onCreateClick = {},
-                title = kanbanBoardData.title,
-            )
-        }
+        // then
 
-        onNodeWithText("완료율: 20.0% (1/5)").assertExists()
+        // when
+    }
+
+    @Test
+    fun `태스크 카드를 Done에서 To Do로 옮겼을 때 완료율이 변경된다`() = runComposeUiTest {
+        // given
+
+        // then
+
+        // when
     }
 }

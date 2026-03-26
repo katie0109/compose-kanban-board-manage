@@ -31,8 +31,7 @@ fun ProjectBoard() {
         selectedIndex = kanbanBoardDatas.indexOf(kanbanBoardData)
     }
 
-    fun isKanbanBoardDataSelected(kanbanBoardData: KanbanBoardData): Boolean =
-        kanbanBoardDatas.indexOf(kanbanBoardData) == selectedIndex
+    fun isKanbanBoardDataSelected(kanbanBoardData: KanbanBoardData): Boolean = kanbanBoardDatas.indexOf(kanbanBoardData) == selectedIndex
 
     fun updateSelectedBoard(update: (KanbanBoardData) -> KanbanBoardData) {
         kanbanBoardDatas = kanbanBoardDatas.mapIndexed { index, data ->

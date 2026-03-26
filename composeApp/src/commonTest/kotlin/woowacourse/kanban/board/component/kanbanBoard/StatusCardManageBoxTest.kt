@@ -11,7 +11,6 @@ import woowacourse.kanban.board.constant.MAX_CONTENT
 import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
 import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
 import woowacourse.kanban.board.model.Tag
@@ -62,7 +61,7 @@ class StatusCardManageBoxTest {
             StatusCardManageBox(
                 boardList = boardList,
                 status = status,
-                statusColor = StatusColor.getStatusColor(status)
+                statusColor = StatusColor.getStatusColor(status),
             )
         }
 

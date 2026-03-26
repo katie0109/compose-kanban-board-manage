@@ -103,6 +103,6 @@ private fun ProjectSideBarPreview() {
     ProjectSideBar(
         kanbanBoardDataList = kanbanBoardDatas,
         isSelected = { false },
-        onClick = {}
+        onClick = {},
     )
 }

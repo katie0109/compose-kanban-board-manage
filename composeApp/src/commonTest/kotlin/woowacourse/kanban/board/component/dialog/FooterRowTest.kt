@@ -6,8 +6,8 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
-import org.assertj.core.api.Assertions.assertThat
 import kotlin.test.Test
+import org.assertj.core.api.Assertions.assertThat
 
 @OptIn(ExperimentalTestApi::class)
 class FooterRowTest {

@@ -28,7 +28,14 @@ import woowacourse.kanban.board.constant.KANBANBOARD_CREATE_BUTTON_COLOR
 import woowacourse.kanban.board.constant.KANBANBOARD_TITLE_COLOR
 
 @Composable
-fun KanbanBoardTitleBar(modifier: Modifier = Modifier, title: String, progress: Float, doneCount: Int, totalStatusCount: Int, onCreateClick: () -> Unit) {
+fun KanbanBoardTitleBar(
+    modifier: Modifier = Modifier,
+    title: String,
+    progress: Float,
+    doneCount: Int,
+    totalStatusCount: Int,
+    onCreateClick: () -> Unit,
+) {
     Column(
         modifier = modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
