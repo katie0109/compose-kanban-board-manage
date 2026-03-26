@@ -84,4 +84,11 @@ class KanbanBoardDataTest {
 
         assertThat(changeKanbanBoardData.doneCount()).isEqualTo(2)
     }
+
+    @Test
+    fun `상태를 To-Do에서 In Progress로 변경했을 때 완료율은 변하지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+
+        assertThat(changeKanbanBoardData.progress()).isEqualTo(kanbanBoardData.progress())
+    }
 }
