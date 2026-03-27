@@ -54,7 +54,7 @@ fun ProjectBoard() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1500, heightDp = 800)
 @Composable
 private fun ProjectBoardPreview() {
     ProjectBoard()

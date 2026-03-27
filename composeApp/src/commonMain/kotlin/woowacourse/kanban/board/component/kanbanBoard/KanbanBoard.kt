@@ -43,12 +43,9 @@ fun KanbanBoard(
     onMoveBoardDataStatus: (Int, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
-
     val names = remember { listOf("다이노", "페임스") }
-
     var showDialog by remember { mutableStateOf(false) }
     var isShowSnackBar by remember { mutableStateOf(false) }
-
     var text by remember { mutableStateOf("새로운 태스크가 생성되었습니다.") }
 
     fun onCreateClick() {
@@ -180,7 +177,7 @@ fun KanbanBoard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1200, heightDp = 800)
 @Composable
 private fun KanbanBoardPreview() {
     KanbanBoard(kanbanBoardData = KanbanBoardData(title = "Compose1"))
