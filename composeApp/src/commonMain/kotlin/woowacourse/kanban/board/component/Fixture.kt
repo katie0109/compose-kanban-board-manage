@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.constant
+package woowacourse.kanban.board.component
 
 // 보드에 들어갈 내용
 const val DEFAULT_TITLE = "LazyColumn 컴포넌트 구현"

@@ -3,12 +3,12 @@ package woowacourse.kanban.board.model
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import woowacourse.kanban.board.constant.DEFAULT_CONTENT
-import woowacourse.kanban.board.constant.DEFAULT_NAME
-import woowacourse.kanban.board.constant.DEFAULT_TITLE
-import woowacourse.kanban.board.constant.MAX_CONTENT
-import woowacourse.kanban.board.constant.MAX_NAME
-import woowacourse.kanban.board.constant.MAX_TITLE
+import woowacourse.kanban.board.component.DEFAULT_CONTENT
+import woowacourse.kanban.board.component.DEFAULT_NAME
+import woowacourse.kanban.board.component.DEFAULT_TITLE
+import woowacourse.kanban.board.component.MAX_CONTENT
+import woowacourse.kanban.board.component.MAX_NAME
+import woowacourse.kanban.board.component.MAX_TITLE
 
 class KanbanBoardDataTest {
     private val boardList = listOf(
