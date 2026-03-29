@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.view
+package woowacourse.kanban.board.component.kanbanBoard
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable

@@ -47,7 +47,6 @@ import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
 import woowacourse.kanban.board.theme.StatusColor
-import woowacourse.kanban.board.view.TaskCardView
 
 @Composable
 fun StatusCardManageBox(
