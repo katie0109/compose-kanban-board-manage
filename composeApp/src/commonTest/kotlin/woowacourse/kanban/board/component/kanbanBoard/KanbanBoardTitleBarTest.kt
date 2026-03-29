@@ -22,7 +22,7 @@ class KanbanBoardTitleBarTest {
 
     private val kanbanBoard = KanbanBoard(
         title = "Compose1",
-        boardList = listOf(
+        taskList = listOf(
             Task(
                 title = DEFAULT_TITLE,
                 description = DEFAULT_CONTENT,

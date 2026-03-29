@@ -12,8 +12,8 @@ import woowacourse.kanban.board.component.MAX_NAME
 import woowacourse.kanban.board.component.MAX_TITLE
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.domain.StatusColor
 import woowacourse.kanban.board.domain.Tag
+import woowacourse.kanban.board.theme.StatusColor
 
 @OptIn(ExperimentalTestApi::class)
 class StatusCardManageBoxTest {

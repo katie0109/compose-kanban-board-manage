@@ -11,7 +11,7 @@ import woowacourse.kanban.board.component.MAX_NAME
 import woowacourse.kanban.board.component.MAX_TITLE
 
 class KanbanBoardTest {
-    private val boardList = listOf(
+    private val taskList = listOf(
         Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
@@ -46,23 +46,23 @@ class KanbanBoardTest {
     )
 
     private val kanbanBoard = KanbanBoard(
-        title = "Compose1", boardList = boardList,
+        title = "Compose1", taskList = taskList,
     )
 
-    private val targetCard = kanbanBoard.boardList[0]
+    private val targetCard = kanbanBoard.taskList[0]
 
     @Test
     fun `태스크 전체 개수를 알고 있다`() {
 
-        Assertions.assertThat(kanbanBoard.totalStatusCount()).isEqualTo(boardList.size)
+        Assertions.assertThat(kanbanBoard.totalStatusCount()).isEqualTo(taskList.size)
     }
 
     @Test
     fun `상태(To-Do, In Progress, Done)별 태스크 개수가 노출된다`() {
 
-        Assertions.assertThat(kanbanBoard.getStatusBoard(Status.TODO).size).isEqualTo(3)
-        Assertions.assertThat(kanbanBoard.getStatusBoard(Status.IN_PROGRESS).size).isEqualTo(1)
-        Assertions.assertThat(kanbanBoard.getStatusBoard(Status.DONE).size).isEqualTo(1)
+        Assertions.assertThat(kanbanBoard.getStatusTask(Status.TODO).size).isEqualTo(3)
+        Assertions.assertThat(kanbanBoard.getStatusTask(Status.IN_PROGRESS).size).isEqualTo(1)
+        Assertions.assertThat(kanbanBoard.getStatusTask(Status.DONE).size).isEqualTo(1)
     }
 
     @Test
@@ -73,21 +73,21 @@ class KanbanBoardTest {
 
     @Test
     fun `상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다`() {
-        val changeKanbanBoardData = kanbanBoard.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+        val changeKanbanBoardData = kanbanBoard.moveTaskStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
 
-        assertThat(changeKanbanBoardData.boardList[0].status).isEqualTo(Status.IN_PROGRESS)
+        assertThat(changeKanbanBoardData.taskList[0].status).isEqualTo(Status.IN_PROGRESS)
     }
 
     @Test
     fun `상태를 To-Do에서 Done으로 옮겼을 때 doneCount가 증가한다`() {
-        val changeKanbanBoardData = kanbanBoard.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.DONE)
+        val changeKanbanBoardData = kanbanBoard.moveTaskStatus(taskId = targetCard.id, targetStatus = Status.DONE)
 
         assertThat(changeKanbanBoardData.doneCount()).isEqualTo(2)
     }
 
     @Test
     fun `상태를 To-Do에서 In Progress로 변경했을 때 완료율은 변하지 않는다`() {
-        val changeKanbanBoardData = kanbanBoard.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+        val changeKanbanBoardData = kanbanBoard.moveTaskStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
 
         assertThat(changeKanbanBoardData.progress()).isEqualTo(kanbanBoard.progress())
     }
