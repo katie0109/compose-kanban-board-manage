@@ -45,10 +45,10 @@ fun ProjectBoard() {
         KanbanBoard(
             selectedKanbanBoardData,
             onAddBoardData = { boardData ->
-                updateSelectedBoard { it.addBoardData(boardData) }
+                updateSelectedBoard { it.addTask(boardData) }
             },
             onMoveBoardDataStatus = { taskId, targetStatus ->
-                updateSelectedBoard { it.moveBoardDataStatus(taskId, targetStatus) }
+                updateSelectedBoard { it.moveTaskStatus(taskId, targetStatus) }
             },
         )
     }

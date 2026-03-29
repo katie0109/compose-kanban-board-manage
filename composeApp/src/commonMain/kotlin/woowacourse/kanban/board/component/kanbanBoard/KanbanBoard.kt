@@ -104,7 +104,7 @@ fun KanbanBoard(
             ) {
                 Status.entries.forEach { status ->
                     StatusCardManageBox(
-                        boardList = kanbanBoard.getStatusBoard(status),
+                        boardList = kanbanBoard.getStatusTask(status),
                         status = status,
                         statusColor = StatusColor.getStatusColor(status),
                         getIsDropTarget = {

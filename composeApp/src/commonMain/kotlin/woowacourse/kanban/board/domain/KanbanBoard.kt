@@ -1,27 +1,27 @@
 package woowacourse.kanban.board.domain
 
-data class KanbanBoard(val title: String, val boardList: List<Task> = emptyList()) {
-    fun totalStatusCount(): Int = boardList.size
-    fun doneCount(): Int = boardList.count { it.status == Status.DONE }
+data class KanbanBoard(val title: String, val taskList: List<Task> = emptyList()) {
+    fun totalStatusCount(): Int = taskList.size
+    fun doneCount(): Int = taskList.count { it.status == Status.DONE }
 
     fun progress(): Float =
-        if (totalStatusCount() == 0) 0f else (boardList.count { it.status == Status.DONE }).toFloat() / totalStatusCount()
+        if (totalStatusCount() == 0) 0f else (taskList.count { it.status == Status.DONE }).toFloat() / totalStatusCount()
 
-    fun addBoardData(task: Task): KanbanBoard = copy(boardList = boardList + task)
+    fun addTask(task: Task): KanbanBoard = copy(taskList = taskList + task)
 
-    fun moveBoardDataStatus(taskId: Int, targetStatus: Status): KanbanBoard {
-        val targetIndex = boardList.indexOfFirst { it.id == taskId }
+    fun moveTaskStatus(taskId: Int, targetStatus: Status): KanbanBoard {
+        val targetIndex = taskList.indexOfFirst { it.id == taskId }
         if (targetIndex == -1) return this
 
-        val targetBoard = boardList[targetIndex]
-        if (targetBoard.status == targetStatus) return this
+        val targetTask = taskList[targetIndex]
+        if (targetTask.status == targetStatus) return this
 
-        val updatedBoardList = boardList.map { boardData ->
-            if (boardData.id == taskId) boardData.copy(status = targetStatus) else boardData
+        val updatedTaskList = taskList.map { task ->
+            if (task.id == taskId) task.copy(status = targetStatus) else task
         }
 
-        return copy(boardList = updatedBoardList)
+        return copy(taskList = updatedTaskList)
     }
 
-    fun getStatusBoard(status: Status): List<Task> = boardList.filter { it.status == status }
+    fun getStatusTask(status: Status): List<Task> = taskList.filter { it.status == status }
 }
