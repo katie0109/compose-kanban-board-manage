@@ -17,8 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import woowacourse.kanban.board.constant.PROFILE_BG_COLOR
-import woowacourse.kanban.board.constant.PROFILE_COLOR
+import woowacourse.kanban.board.theme.PROFILE_BG_COLOR
+import woowacourse.kanban.board.theme.PROFILE_COLOR
 
 @Composable
 fun ProfileComponent(nickname: String, modifier: Modifier = Modifier) {

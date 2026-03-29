@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.constant
+package woowacourse.kanban.board.theme
 
 // 보드에 사용된 색상
 // 텍스트 필드 칼럼

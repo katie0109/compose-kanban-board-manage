@@ -18,9 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import woowacourse.kanban.board.constant.CREATE_BG
-import woowacourse.kanban.board.constant.CREATE_BG_ERROR
-import woowacourse.kanban.board.constant.PRIMARY_TEXT
+import woowacourse.kanban.board.theme.CREATE_BG
+import woowacourse.kanban.board.theme.CREATE_BG_ERROR
+import woowacourse.kanban.board.theme.PRIMARY_TEXT
 
 @Composable
 fun FooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
@@ -69,58 +69,10 @@ private fun FooterButton(
 
 @Preview(showBackground = true)
 @Composable
-private fun CancelFooterButtonPreview() {
-    FooterButton(
-        modifier = Modifier,
-        text = "취소",
-        backgroundColor = Color.White,
-        textColor = Color(PRIMARY_TEXT),
-        onClick = {},
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CreateEnableFooterButtonPreview() {
-    FooterButton(
-        modifier = Modifier,
-        text = "생성",
-        textColor = Color.White,
-        backgroundColor = Color(CREATE_BG),
-        onClick = {},
-        enabled = true,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CreateNotEnableFooterButtonPreview() {
-    FooterButton(
-        modifier = Modifier,
-        text = "생성",
-        textColor = Color.White,
-        backgroundColor = Color(CREATE_BG_ERROR),
-        onClick = {},
-        enabled = false,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
 private fun CreateEnableFooterRowPreview() {
     FooterRow(
         onCancel = {},
         onCreate = {},
         isCreateError = false,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CreateNotEnableFooterRowPreview() {
-    FooterRow(
-        onCancel = {},
-        onCreate = {},
-        isCreateError = true,
     )
 }

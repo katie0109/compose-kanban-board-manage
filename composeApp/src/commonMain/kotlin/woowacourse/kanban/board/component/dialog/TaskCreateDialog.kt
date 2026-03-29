@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.state.BoardDataState
@@ -95,4 +96,16 @@ fun TaskCreateDialog(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TaskCreateDialogPreview(){
+    TaskCreateDialog(
+        onTaskCreate = {},
+        onDismissRequest = {},
+        statuses = Status.entries,
+        names = listOf("다이노", "페임스"),
+        modifier = Modifier
+    )
 }

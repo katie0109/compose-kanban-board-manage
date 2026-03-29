@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import woowacourse.kanban.board.constant.TAG_COLOR
+import woowacourse.kanban.board.theme.TAG_COLOR
 import woowacourse.kanban.board.model.Tag
 
 @Composable

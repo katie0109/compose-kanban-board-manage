@@ -23,9 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.KANBANBOARD_CONTENT_COLOR
-import woowacourse.kanban.board.constant.KANBANBOARD_CREATE_BUTTON_COLOR
-import woowacourse.kanban.board.constant.KANBANBOARD_TITLE_COLOR
+import woowacourse.kanban.board.theme.KANBANBOARD_CONTENT_COLOR
+import woowacourse.kanban.board.theme.KANBANBOARD_CREATE_BUTTON_COLOR
+import woowacourse.kanban.board.theme.KANBANBOARD_TITLE_COLOR
 
 @Composable
 fun KanbanBoardTitleBar(

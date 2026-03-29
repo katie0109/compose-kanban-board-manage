@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.TEXT_FIELD_ERROR
+import woowacourse.kanban.board.theme.TEXT_FIELD_ERROR
 
 @Composable
 fun CommonTextColumn(

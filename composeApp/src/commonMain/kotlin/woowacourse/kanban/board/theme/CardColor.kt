@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.constant
+package woowacourse.kanban.board.theme
 
 // 카드에 사용된 색상
 const val TAG_COLOR = 0xffF3F4F6

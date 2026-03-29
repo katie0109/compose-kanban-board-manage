@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import woowacourse.kanban.board.constant.BORDER_COLOR
+import woowacourse.kanban.board.theme.BORDER_COLOR
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE

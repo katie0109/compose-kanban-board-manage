@@ -1,4 +1,7 @@
-package woowacourse.kanban.board.constant
+package woowacourse.kanban.board.theme
+
+import woowacourse.kanban.board.model.Status
+
 
 // 상태 카드 관리 박스 제목에 사용된 색상
 const val TODO_CARD_BOX_TITLE_COLOR = 0xFF155DFC
@@ -19,3 +22,20 @@ const val DONE_CARD_BOX_BORDER_COLOR = 0xFFB9F8CF
 const val KANBANBOARD_TITLE_COLOR = 0xFF101828
 const val KANBANBOARD_CONTENT_COLOR = 0xFF6A7282
 const val KANBANBOARD_CREATE_BUTTON_COLOR = 0xFF4F39F6
+
+data class StatusColor(val titleBgColor: Long, val boardBgColor: Long, val boardBorderColor: Long) {
+    companion object {
+        fun getStatusColor(status: Status): StatusColor {
+            return when (status) {
+                Status.TODO -> StatusColor(TODO_CARD_BOX_TITLE_COLOR, TODO_CARD_BOX_CONTENT_COLOR, TODO_CARD_BOX_BORDER_COLOR)
+                Status.IN_PROGRESS -> StatusColor(
+                    IN_PROGRESS_CARD_BOX_TITLE_COLOR,
+                    IN_PROGRESS_CARD_BOX_CONTENT_COLOR,
+                    IN_PROGRESS_CARD_BOX_BORDER_COLOR,
+                )
+
+                Status.DONE -> StatusColor(DONE_CARD_BOX_TITLE_COLOR, DONE_CARD_BOX_CONTENT_COLOR, DONE_CARD_BOX_BORDER_COLOR)
+            }
+        }
+    }
+}

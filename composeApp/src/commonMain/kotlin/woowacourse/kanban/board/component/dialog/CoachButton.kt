@@ -21,11 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.COACH_BG_SELECTED
-import woowacourse.kanban.board.constant.COACH_BORDER_SELECTED
-import woowacourse.kanban.board.constant.COACH_ICON_TINT
-import woowacourse.kanban.board.constant.PRIMARY_BORDER
-import woowacourse.kanban.board.constant.PRIMARY_SUB_TEXT
+import woowacourse.kanban.board.theme.COACH_BG_SELECTED
+import woowacourse.kanban.board.theme.COACH_BORDER_SELECTED
+import woowacourse.kanban.board.theme.COACH_ICON_TINT
+import woowacourse.kanban.board.theme.PRIMARY_BORDER
+import woowacourse.kanban.board.theme.PRIMARY_SUB_TEXT
 
 @Composable
 fun CoachButton(isSelected: Boolean, name: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -61,10 +61,4 @@ fun CoachButton(isSelected: Boolean, name: String, onClick: () -> Unit, modifier
 @Composable
 private fun SelectedCoachButtonPreview() {
     CoachButton(name = "다이노", isSelected = true, onClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun UnSelectedCoachButtonPreview() {
-    CoachButton(name = "페임스", isSelected = false, onClick = {})
 }

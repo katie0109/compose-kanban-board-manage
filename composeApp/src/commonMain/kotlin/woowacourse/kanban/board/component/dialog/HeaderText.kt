@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.HEADER_TEXT
+import woowacourse.kanban.board.theme.HEADER_TEXT
 
 @Composable
 fun HeaderText(title: String, modifier: Modifier = Modifier) {
@@ -18,10 +18,4 @@ fun HeaderText(title: String, modifier: Modifier = Modifier) {
 @Composable
 private fun StatusHeaderTextPreview() {
     HeaderText(title = "상태")
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun NameHeaderTextPreview() {
-    HeaderText(title = "작성자")
 }

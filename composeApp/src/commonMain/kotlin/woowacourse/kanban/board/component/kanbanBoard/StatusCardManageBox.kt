@@ -40,9 +40,9 @@ import woowacourse.kanban.board.constant.DEFAULT_TITLE
 import woowacourse.kanban.board.constant.MAX_CONTENT
 import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_TITLE_COLOR
+import woowacourse.kanban.board.theme.TODO_CARD_BOX_BORDER_COLOR
+import woowacourse.kanban.board.theme.TODO_CARD_BOX_CONTENT_COLOR
+import woowacourse.kanban.board.theme.TODO_CARD_BOX_TITLE_COLOR
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor

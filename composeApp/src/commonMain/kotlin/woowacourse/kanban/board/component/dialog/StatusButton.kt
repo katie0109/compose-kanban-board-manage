@@ -15,11 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.PRIMARY_BORDER
-import woowacourse.kanban.board.constant.PRIMARY_SUB_TEXT
-import woowacourse.kanban.board.constant.STATUS_BG_SELECTED
-import woowacourse.kanban.board.constant.STATUS_BORDER_SELECTED
-import woowacourse.kanban.board.constant.STATUS_TEXT_SELECTED
+import woowacourse.kanban.board.theme.PRIMARY_BORDER
+import woowacourse.kanban.board.theme.PRIMARY_SUB_TEXT
+import woowacourse.kanban.board.theme.STATUS_BG_SELECTED
+import woowacourse.kanban.board.theme.STATUS_BORDER_SELECTED
+import woowacourse.kanban.board.theme.STATUS_TEXT_SELECTED
 import woowacourse.kanban.board.model.Status
 
 @Composable
@@ -55,10 +55,4 @@ fun StatusButton(status: Status, onClick: () -> Unit, modifier: Modifier = Modif
 @Composable
 private fun SelectedStatusButtonPreview() {
     StatusButton(status = Status.TODO, isSelected = true, onClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun UnSelectedStatusButtonPreview() {
-    StatusButton(status = Status.IN_PROGRESS, onClick = {})
 }
