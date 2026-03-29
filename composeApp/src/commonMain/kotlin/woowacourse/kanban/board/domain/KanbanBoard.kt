@@ -1,15 +1,15 @@
 package woowacourse.kanban.board.model
 
-data class KanbanBoardData(val title: String, val boardList: List<BoardData> = emptyList()) {
+data class KanbanBoard(val title: String, val boardList: List<BoardData> = emptyList()) {
     fun totalStatusCount(): Int = boardList.size
     fun doneCount(): Int = boardList.count { it.status == Status.DONE }
 
     fun progress(): Float =
         if (totalStatusCount() == 0) 0f else (boardList.count { it.status == Status.DONE }).toFloat() / totalStatusCount()
 
-    fun addBoardData(boardData: BoardData): KanbanBoardData = copy(boardList = boardList + boardData)
+    fun addBoardData(boardData: BoardData): KanbanBoard = copy(boardList = boardList + boardData)
 
-    fun moveBoardDataStatus(taskId: Int, targetStatus: Status): KanbanBoardData {
+    fun moveBoardDataStatus(taskId: Int, targetStatus: Status): KanbanBoard {
         val targetIndex = boardList.indexOfFirst { it.id == taskId }
         if (targetIndex == -1) return this
 
