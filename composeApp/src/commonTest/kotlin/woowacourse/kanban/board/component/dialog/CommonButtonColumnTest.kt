@@ -36,7 +36,7 @@ class CommonButtonColumnTest {
     }
 
     @Test
-    fun `페임스가 적힌 버튼을 클릭했을 때 boardDataState는 "페임스" 상태를 가진다`() = runComposeUiTest {
+    fun `페임스가 적힌 버튼을 클릭했을 때 boardDataState는 페임스 상태를 가진다`() = runComposeUiTest {
         val names = listOf("다이노", "페임스")
 
         val dialogState = DialogState()
