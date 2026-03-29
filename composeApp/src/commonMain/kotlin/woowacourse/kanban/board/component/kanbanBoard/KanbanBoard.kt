@@ -33,7 +33,10 @@ import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
 import woowacourse.kanban.board.state.DialogState
+import woowacourse.kanban.board.state.KanbanBoardState
 import woowacourse.kanban.board.theme.StatusColor
+import java.awt.SystemColor.text
+import javax.swing.JColorChooser.showDialog
 
 @Composable
 fun KanbanBoard(
@@ -44,48 +47,12 @@ fun KanbanBoard(
 ) {
     val statuses = remember { Status.entries }
     val names = remember { listOf("다이노", "페임스") }
-    var showDialog by remember { mutableStateOf(false) }
-    var isShowSnackBar by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("새로운 태스크가 생성되었습니다.") }
-
-    fun onCreateClick() {
-        showDialog = true
-    }
-
-    fun onDismissRequest() {
-        showDialog = false
-    }
-
-    fun onShowSnackBar() {
-        isShowSnackBar = true
-    }
-
-    fun onTaskCreate(dialogState: DialogState) {
-        val task = Task(
-            title = dialogState.titleInputValue,
-            description = dialogState.descriptionInputValue,
-            tags = if (dialogState.tagsInputValue.isNotBlank()) {
-                dialogState.tagsInputValue.split(",").map { Tag(it) }
-            } else emptyList(),
-            status = dialogState.statusValue,
-            nickname = dialogState.nameValue,
-        )
-        onAddTask(task)
-    }
+    var state = remember { KanbanBoardState() }
 
     suspend fun showSnackBar() {
         delay(3000.milliseconds)
-        isShowSnackBar = false
+        state.isShowSnackBar = false
     }
-
-    fun onSnackBarCancelClick() {
-        isShowSnackBar = false
-    }
-
-    var draggedTaskId by remember { mutableStateOf<Int?>(null) }
-    var currentDragPosition by remember { mutableStateOf<Offset?>(null) }
-    val columnBounds = remember { mutableStateMapOf<Status, Rect>() }
-    var draggedTaskSourceStatus by remember { mutableStateOf<Status?>(null) }
 
     Box {
         Column(
@@ -96,7 +63,7 @@ fun KanbanBoard(
                 progress = kanbanBoard.progress(),
                 doneCount = kanbanBoard.doneCount(),
                 totalStatusCount = kanbanBoard.totalStatusCount(),
-                onCreateClick = { onCreateClick() },
+                onCreateClick = { state.showDialog = true },
             )
             Row(
                 modifier = Modifier.padding(24.dp),
@@ -108,73 +75,86 @@ fun KanbanBoard(
                         status = status,
                         statusColor = StatusColor.getStatusColor(status),
                         getIsDropTarget = {
-                            currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
+                            state.currentDragPosition?.let { state.columnBounds[status]?.contains(it) } ?: false
                         },
-                        onBoundsChanged = { rect -> columnBounds[status] = rect },
+                        onBoundsChanged = { rect -> state.columnBounds[status] = rect },
                         onTaskDragStart = { task ->
-                            draggedTaskId = task.id
-                            draggedTaskSourceStatus = task.status
+                            state.draggedTaskId = task.id
+                            state.draggedTaskSourceStatus = task.status
                         },
-                        onTaskDragChange = { pos -> currentDragPosition = pos },
+                        onTaskDragChange = { pos -> state.currentDragPosition = pos },
                         onTaskDragEnd = {
-                            val dropPosition = currentDragPosition ?: run {
-                                draggedTaskId = null
+                            val dropPosition = state.currentDragPosition ?: run {
+                                state.draggedTaskId = null
                                 return@StatusCardManageBox
                             }
-                            val targetStatus = columnBounds.entries
+                            val targetStatus = state.columnBounds.entries
                                 .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
 
-                            if (targetStatus != null && draggedTaskId != null) {
-                                if (targetStatus != draggedTaskSourceStatus) {
-                                    text = "태스크가 이동되었습니다."
-                                    isShowSnackBar = true
+                            if (targetStatus != null && state.draggedTaskId != null) {
+                                if (targetStatus != state.draggedTaskSourceStatus) {
+                                    state.text = "태스크가 이동되었습니다."
+                                    state.isShowSnackBar = true
                                 }
-                                onMoveTaskStatus(draggedTaskId!!, targetStatus)
+                                onMoveTaskStatus(state.draggedTaskId!!, targetStatus)
                             }
-                            currentDragPosition = null
-                            draggedTaskId = null
-                            draggedTaskSourceStatus = null
+                            state.currentDragPosition = null
+                            state.draggedTaskId = null
+                            state.draggedTaskSourceStatus = null
                         },
                         onTaskDragCancel = {
-                            currentDragPosition = null
-                            draggedTaskId = null
+                            state.currentDragPosition = null
+                            state.draggedTaskId = null
                         },
                     )
                 }
             }
 
-            if (showDialog) {
+            if (state.showDialog) {
                 Dialog(
-                    onDismissRequest = { onDismissRequest() },
+                    onDismissRequest = { state.showDialog = false },
                 ) {
                     TaskCreateDialog(
                         statuses = statuses,
                         names = names,
                         onTaskCreate = {
-                            onTaskCreate(it)
-                            onDismissRequest()
-                            text = "새로운 태스크가 생성되었습니다."
-                            onShowSnackBar()
+                            onTaskCreate(it, onAddTask)
+                            state.showDialog = false
+                            state.text = "새로운 태스크가 생성되었습니다."
+                            state.isShowSnackBar = true
                         },
-                        onDismissRequest = { onDismissRequest() },
+                        onDismissRequest = { state.showDialog = false },
                     )
                 }
             }
         }
-        LaunchedEffect(isShowSnackBar) {
-            if (isShowSnackBar) showSnackBar()
+        LaunchedEffect(state.isShowSnackBar) {
+            if (state.isShowSnackBar) showSnackBar()
         }
-        if (isShowSnackBar) CreateAlertSnackBar(
+        if (state.isShowSnackBar) CreateAlertSnackBar(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(4.dp))
                 .background(color = Color(0xFF322F35))
                 .padding(start = 16.dp)
                 .size(width = 344.dp, height = 48.dp)
                 .align(alignment = Alignment.BottomCenter),
-            text = text,
-            onClick = { onSnackBarCancelClick() },
+            text = state.text,
+            onClick = { state.isShowSnackBar = false },
         )
     }
+}
+
+private fun onTaskCreate(dialogState: DialogState, onAddTask: (Task) -> Unit) {
+    val task = Task(
+        title = dialogState.titleInputValue,
+        description = dialogState.descriptionInputValue,
+        tags = if (dialogState.tagsInputValue.isNotBlank()) {
+            dialogState.tagsInputValue.split(",").map { Tag(it) }
+        } else emptyList(),
+        status = dialogState.statusValue,
+        nickname = dialogState.nameValue,
+    )
+    onAddTask(task)
 }
 
 @Preview(showBackground = true, widthDp = 1200, heightDp = 800)
