@@ -45,9 +45,9 @@ class KanbanBoardTest {
         ),
     )
 
-    private val kanbanBoard = KanbanBoard(
-        title = "Compose1", taskList = taskList,
-    )
+    private val kanbanBoard = taskList.fold(KanbanBoard(title = "Compose1")) { board, task ->
+        board.addTask(task)
+    }
 
     private val targetCard = kanbanBoard.taskList[0]
 
@@ -90,5 +90,29 @@ class KanbanBoardTest {
         val changeKanbanBoardData = kanbanBoard.moveTaskStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
 
         assertThat(changeKanbanBoardData.progress()).isEqualTo(kanbanBoard.progress())
+    }
+
+    @Test
+    fun `To Do 태스크를 Done으로 옮겼을 때 태스크의 상태가 DONE으로 변경된다`() {
+        val targetTask = kanbanBoard.taskList[0]
+        val updated = kanbanBoard.moveTaskStatus(taskId = targetTask.id, targetStatus = Status.DONE)
+
+        assertThat(updated.taskList[0].status).isEqualTo(Status.DONE)
+    }
+
+    @Test
+    fun `태스크를 Done으로 옮겼을 때 완료율이 변경된다`() {
+        val targetTask = kanbanBoard.taskList[0]
+        val updated = kanbanBoard.moveTaskStatus(taskId = targetTask.id, targetStatus = Status.DONE)
+
+        assertThat(updated.progress()).isEqualTo(0.4f)
+    }
+
+    @Test
+    fun `태스크를 Done에서 To Do로 옮겼을 때 완료율이 변경된다`() {
+        val doneTask = kanbanBoard.taskList[4]
+        val updated = kanbanBoard.moveTaskStatus(taskId = doneTask.id, targetStatus = Status.TODO)
+
+        assertThat(updated.progress()).isEqualTo(0.0f)
     }
 }
