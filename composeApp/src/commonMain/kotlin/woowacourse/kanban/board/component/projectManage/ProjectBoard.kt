@@ -9,38 +9,38 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import woowacourse.kanban.board.component.kanbanBoard.KanbanBoard
-import woowacourse.kanban.board.model.KanbanBoardData
+import woowacourse.kanban.board.domain.KanbanBoard
 
 @Composable
 fun ProjectBoard() {
-    var kanbanBoardDatas by remember {
+    var kanbanBoards by remember {
         mutableStateOf(
             listOf(
-                KanbanBoardData(title = "Compose1"),
-                KanbanBoardData(title = "Compose2"),
-                KanbanBoardData(title = "Compose3너무너무너무너무너무너무너무너무"),
+                KanbanBoard(title = "Compose1"),
+                KanbanBoard(title = "Compose2"),
+                KanbanBoard(title = "Compose3너무너무너무너무너무너무너무너무"),
             ),
         )
     }
 
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val selectedKanbanBoardData = kanbanBoardDatas[selectedIndex]
+    val selectedKanbanBoardData = kanbanBoards[selectedIndex]
 
-    fun selectedOnValueChange(kanbanBoardData: KanbanBoardData) {
-        selectedIndex = kanbanBoardDatas.indexOf(kanbanBoardData)
+    fun selectedOnValueChange(kanbanBoard: KanbanBoard) {
+        selectedIndex = kanbanBoards.indexOf(kanbanBoard)
     }
 
-    fun isKanbanBoardDataSelected(kanbanBoardData: KanbanBoardData): Boolean = kanbanBoardDatas.indexOf(kanbanBoardData) == selectedIndex
+    fun isKanbanBoardDataSelected(kanbanBoard: KanbanBoard): Boolean = kanbanBoards.indexOf(kanbanBoard) == selectedIndex
 
-    fun updateSelectedBoard(update: (KanbanBoardData) -> KanbanBoardData) {
-        kanbanBoardDatas = kanbanBoardDatas.mapIndexed { index, data ->
+    fun updateSelectedBoard(update: (KanbanBoard) -> KanbanBoard) {
+        kanbanBoards = kanbanBoards.mapIndexed { index, data ->
             if (index == selectedIndex) update(data) else data
         }
     }
 
     Row {
-        ProjectSideBar(kanbanBoardDatas, isSelected = { isKanbanBoardDataSelected(it) }, onClick = { selectedOnValueChange(it) })
+        ProjectSideBar(kanbanBoards, isSelected = { isKanbanBoardDataSelected(it) }, onClick = { selectedOnValueChange(it) })
         VerticalDivider()
         KanbanBoard(
             selectedKanbanBoardData,

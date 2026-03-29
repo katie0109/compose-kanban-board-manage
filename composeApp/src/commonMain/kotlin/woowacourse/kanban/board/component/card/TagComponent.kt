@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Tag
 
 @Composable
 fun TagComponent(tag: Tag, modifier: Modifier = Modifier) {

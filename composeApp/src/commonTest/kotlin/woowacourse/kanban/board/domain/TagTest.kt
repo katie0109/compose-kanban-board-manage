@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.model
+package woowacourse.kanban.board.domain
 
 import kotlin.test.Test
 import org.assertj.core.api.Assertions.assertThat
@@ -8,7 +8,7 @@ class TagTest {
     @Test
     fun `태그는 최대 5개까지 생성 가능하다`() {
         assertThatThrownBy {
-            BoardData(
+            Task(
                 title = "제목",
                 tags = listOf("일", "이", "삼", "사", "오", "육").map { Tag(it) },
                 status = Status.TODO,

@@ -28,18 +28,18 @@ import androidx.compose.ui.window.Dialog
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import woowacourse.kanban.board.component.dialog.TaskCreateDialog
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.KanbanBoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.StatusColor
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.KanbanBoard
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
 import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.theme.StatusColor
 
 @Composable
 fun KanbanBoard(
-    kanbanBoardData: KanbanBoardData,
+    kanbanBoard: KanbanBoard,
     modifier: Modifier = Modifier,
-    onAddBoardData: (BoardData) -> Unit = {},
+    onAddBoardData: (Task) -> Unit = {},
     onMoveBoardDataStatus: (Int, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
@@ -61,7 +61,7 @@ fun KanbanBoard(
     }
 
     fun onTaskCreate(boardDataState: BoardDataState) {
-        val boardData = BoardData(
+        val task = Task(
             title = boardDataState.titleInputValue,
             description = boardDataState.descriptionInputValue,
             tags = if (boardDataState.tagsInputValue.isNotBlank()) {
@@ -70,7 +70,7 @@ fun KanbanBoard(
             status = boardDataState.statusValue,
             nickname = boardDataState.nameValue,
         )
-        onAddBoardData(boardData)
+        onAddBoardData(task)
     }
 
     suspend fun showSnackBar() {
@@ -92,10 +92,10 @@ fun KanbanBoard(
             modifier = modifier.fillMaxSize().background(color = Color.White),
         ) {
             KanbanBoardTitleBar(
-                title = kanbanBoardData.title,
-                progress = kanbanBoardData.progress(),
-                doneCount = kanbanBoardData.doneCount(),
-                totalStatusCount = kanbanBoardData.totalStatusCount(),
+                title = kanbanBoard.title,
+                progress = kanbanBoard.progress(),
+                doneCount = kanbanBoard.doneCount(),
+                totalStatusCount = kanbanBoard.totalStatusCount(),
                 onCreateClick = { onCreateClick() },
             )
             Row(
@@ -104,7 +104,7 @@ fun KanbanBoard(
             ) {
                 Status.entries.forEach { status ->
                     StatusCardManageBox(
-                        boardList = kanbanBoardData.getStatusBoard(status),
+                        boardList = kanbanBoard.getStatusBoard(status),
                         status = status,
                         statusColor = StatusColor.getStatusColor(status),
                         getIsDropTarget = {
@@ -180,5 +180,5 @@ fun KanbanBoard(
 @Preview(showBackground = true, widthDp = 1200, heightDp = 800)
 @Composable
 private fun KanbanBoardPreview() {
-    KanbanBoard(kanbanBoardData = KanbanBoardData(title = "Compose1"))
+    KanbanBoard(kanbanBoard = KanbanBoard(title = "Compose1"))
 }

@@ -3,9 +3,9 @@ package woowacourse.kanban.board.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
 
 class BoardDataState {
     var titleInputValue by mutableStateOf("")
@@ -19,7 +19,7 @@ class BoardDataState {
 
     fun titleOnValueChange(value: String) {
         titleInputValue = value
-        isTitleError = BoardData.isTitleError(titleInputValue)
+        isTitleError = Task.isTitleError(titleInputValue)
     }
 
     fun descriptionOnValueChange(value: String) {
@@ -29,7 +29,7 @@ class BoardDataState {
     fun tagsOnValueChange(value: String) {
         tagsInputValue = value
         val tags = if (tagsInputValue.isNotBlank()) tagsInputValue.split(",") else emptyList()
-        isTagsError = tags.any { Tag.isTagError(it) } || BoardData.isTagsError(tags.map { Tag(it) })
+        isTagsError = tags.any { Tag.isTagError(it) } || Task.isTagsError(tags.map { Tag(it) })
     }
 
     fun statusOnValueChange(status: Status) {

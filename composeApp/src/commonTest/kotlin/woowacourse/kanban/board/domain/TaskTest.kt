@@ -1,13 +1,13 @@
-package woowacourse.kanban.board.model
+package woowacourse.kanban.board.domain
 
 import kotlin.test.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
-class BoardDataTest {
+class TaskTest {
     @Test
     fun `태스크는 제목, 설명, 태그, 상태, 담당자를 가진다`() {
-        val taskCreateData = BoardData(
+        val taskCreateData = Task(
             title = "제목",
             description = "내용 어쩌구 저쩌구",
             tags = listOf(Tag("버그"), Tag("다시하기"), Tag("1시간")),
@@ -25,7 +25,7 @@ class BoardDataTest {
     @Test
     fun `제목이 빈 문자열이면 태스크 생성이 불가능하다`() {
         assertThatThrownBy {
-            BoardData(
+            Task(
                 title = "",
                 description = "내용 어쩌구 저쩌구",
                 tags = listOf(Tag("버그"), Tag("다시하기"), Tag("1시간")),
@@ -35,7 +35,7 @@ class BoardDataTest {
         }.isInstanceOf(IllegalArgumentException::class.java)
 
         assertThatThrownBy {
-            BoardData(
+            Task(
                 title = "",
                 status = Status.TODO,
                 nickname = "하로",

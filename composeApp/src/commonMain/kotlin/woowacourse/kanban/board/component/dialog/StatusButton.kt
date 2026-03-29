@@ -20,7 +20,7 @@ import woowacourse.kanban.board.theme.PRIMARY_SUB_TEXT
 import woowacourse.kanban.board.theme.STATUS_BG_SELECTED
 import woowacourse.kanban.board.theme.STATUS_BORDER_SELECTED
 import woowacourse.kanban.board.theme.STATUS_TEXT_SELECTED
-import woowacourse.kanban.board.model.Status
+import woowacourse.kanban.board.domain.Status
 
 @Composable
 fun StatusButton(status: Status, onClick: () -> Unit, modifier: Modifier = Modifier, isSelected: Boolean = false) {

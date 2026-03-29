@@ -24,12 +24,12 @@ import woowacourse.kanban.board.component.DEFAULT_TITLE
 import woowacourse.kanban.board.component.MAX_CONTENT
 import woowacourse.kanban.board.component.MAX_NAME
 import woowacourse.kanban.board.component.MAX_TITLE
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
 
 @Composable
-fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
+fun TaskCard(task: Task, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(15.dp))
@@ -44,54 +44,54 @@ fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
     ) {
         Column {
             // 제목
-            TitleComponent(title = board.title, modifier = Modifier.padding(vertical = 8.dp).testTag("제목"))
+            TitleComponent(title = task.title, modifier = Modifier.padding(vertical = 8.dp).testTag("제목"))
 
             // 중간 내용
-            if (board.description.isNotBlank()) {
-                DescriptionComponent(description = board.description, modifier = Modifier.padding(vertical = 4.dp).testTag("중간내용"))
+            if (task.description.isNotBlank()) {
+                DescriptionComponent(description = task.description, modifier = Modifier.padding(vertical = 4.dp).testTag("중간내용"))
             }
 
             // 태그
-            if (board.tags.isNotEmpty()) {
-                TagsComponent(tags = board.tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
+            if (task.tags.isNotEmpty()) {
+                TagsComponent(tags = task.tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
             }
 
             // 구분선
             HorizontalDivider(thickness = 2.dp)
 
             // 작성자
-            ProfileComponent(nickname = board.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
+            ProfileComponent(nickname = task.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
         }
     }
 }
 
-private class BoardPreviewParameterProvider : PreviewParameterProvider<BoardData> {
+private class BoardPreviewParameterProvider : PreviewParameterProvider<Task> {
     override val values = sequenceOf(
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = MAX_TITLE,
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
@@ -103,6 +103,6 @@ private class BoardPreviewParameterProvider : PreviewParameterProvider<BoardData
 
 @Preview(showBackground = true)
 @Composable
-private fun BoardScreenView(@PreviewParameter(BoardPreviewParameterProvider::class) board: BoardData) {
-    TaskCard(board)
+private fun BoardScreenView(@PreviewParameter(BoardPreviewParameterProvider::class) task: Task) {
+    TaskCard(task)
 }

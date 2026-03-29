@@ -10,40 +10,40 @@ import woowacourse.kanban.board.component.DEFAULT_TITLE
 import woowacourse.kanban.board.component.MAX_CONTENT
 import woowacourse.kanban.board.component.MAX_NAME
 import woowacourse.kanban.board.component.MAX_TITLE
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.StatusColor
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.StatusColor
+import woowacourse.kanban.board.domain.Tag
 
 @OptIn(ExperimentalTestApi::class)
 class StatusCardManageBoxTest {
 
     private val boardList = listOf(
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.IN_PROGRESS,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = MAX_TITLE,
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),

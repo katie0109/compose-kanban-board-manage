@@ -43,21 +43,21 @@ import woowacourse.kanban.board.component.MAX_TITLE
 import woowacourse.kanban.board.theme.TODO_CARD_BOX_BORDER_COLOR
 import woowacourse.kanban.board.theme.TODO_CARD_BOX_CONTENT_COLOR
 import woowacourse.kanban.board.theme.TODO_CARD_BOX_TITLE_COLOR
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.StatusColor
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
+import woowacourse.kanban.board.theme.StatusColor
 import woowacourse.kanban.board.view.TaskCardView
 
 @Composable
 fun StatusCardManageBox(
-    boardList: List<BoardData>,
+    boardList: List<Task>,
     status: Status,
     statusColor: StatusColor,
     modifier: Modifier = Modifier,
     getIsDropTarget: () -> Boolean = { false },
     onBoundsChanged: (Rect) -> Unit = {},
-    onTaskDragStart: (BoardData) -> Unit = {},
+    onTaskDragStart: (Task) -> Unit = {},
     onTaskDragChange: (Offset) -> Unit = {},
     onTaskDragEnd: () -> Unit = {},
     onTaskDragCancel: () -> Unit = {},
@@ -148,31 +148,31 @@ fun StatusCardManageBox(
 @Composable
 private fun StatusCardManageBoxPreview() {
     val boardList = listOf(
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = DEFAULT_TITLE,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
-        BoardData(
+        Task(
             title = MAX_TITLE,
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),

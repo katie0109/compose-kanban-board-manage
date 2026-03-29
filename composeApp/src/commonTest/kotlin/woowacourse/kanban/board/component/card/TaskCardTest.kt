@@ -8,9 +8,9 @@ import kotlin.test.Test
 import woowacourse.kanban.board.component.DEFAULT_CONTENT
 import woowacourse.kanban.board.component.DEFAULT_NAME
 import woowacourse.kanban.board.component.DEFAULT_TITLE
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
 
 @OptIn(ExperimentalTestApi::class)
 class TaskCardTest {
@@ -21,7 +21,7 @@ class TaskCardTest {
         tags: List<Tag> = listOf(Tag("컴포넌트"), Tag("성능")),
         status: Status = Status.TODO,
         nickname: String = DEFAULT_NAME,
-    ) = BoardData(
+    ) = Task(
         title = title,
         description = content,
         tags = tags,
@@ -30,7 +30,7 @@ class TaskCardTest {
     )
 
     @Composable
-    private fun CreateUi(board: BoardData) {
+    private fun CreateUi(board: Task) {
         TaskCard(board)
     }
 

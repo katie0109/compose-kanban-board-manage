@@ -1,6 +1,6 @@
 package woowacourse.kanban.board.theme
 
-import woowacourse.kanban.board.model.Status
+import woowacourse.kanban.board.domain.Status
 
 
 // 상태 카드 관리 박스 제목에 사용된 색상

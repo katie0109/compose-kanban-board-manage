@@ -23,14 +23,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.model.KanbanBoardData
+import woowacourse.kanban.board.domain.KanbanBoard
 
 @Composable
 fun ProjectSideBar(
-    kanbanBoardDataList: List<KanbanBoardData>,
+    kanbanBoardList: List<KanbanBoard>,
     modifier: Modifier = Modifier,
-    isSelected: (KanbanBoardData) -> Boolean,
-    onClick: (KanbanBoardData) -> Unit,
+    isSelected: (KanbanBoard) -> Boolean,
+    onClick: (KanbanBoard) -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxHeight().width(256.dp).background(color = Color.White),
@@ -40,8 +40,8 @@ fun ProjectSideBar(
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
-            kanbanBoardDataList.forEach { kanbanBoardData ->
-                KanbanBoardButton(kanbanBoardData = kanbanBoardData, isSelected = { isSelected(it) }, onClick = onClick)
+            kanbanBoardList.forEach { kanbanBoardData ->
+                KanbanBoardButton(kanbanBoard = kanbanBoardData, isSelected = { isSelected(it) }, onClick = onClick)
             }
         }
     }
@@ -61,25 +61,25 @@ private fun ProjectTitle(modifier: Modifier = Modifier) {
 
 @Composable
 private fun KanbanBoardButton(
-    kanbanBoardData: KanbanBoardData,
+    kanbanBoard: KanbanBoard,
     modifier: Modifier = Modifier,
-    isSelected: (KanbanBoardData) -> Boolean,
-    onClick: (KanbanBoardData) -> Unit,
+    isSelected: (KanbanBoard) -> Boolean,
+    onClick: (KanbanBoard) -> Unit,
 ) {
     Button(
         modifier = Modifier.padding(bottom = 4.dp).fillMaxWidth(),
         colors = ButtonColors(
-            containerColor = if (isSelected(kanbanBoardData)) Color(0xFFEEF2FF) else Color.White,
+            containerColor = if (isSelected(kanbanBoard)) Color(0xFFEEF2FF) else Color.White,
             contentColor = Color.White,
-            disabledContainerColor = if (isSelected(kanbanBoardData)) Color(0xFFEEF2FF) else Color.White,
+            disabledContainerColor = if (isSelected(kanbanBoard)) Color(0xFFEEF2FF) else Color.White,
             disabledContentColor = Color.White,
         ),
         shape = RoundedCornerShape(16.dp),
-        onClick = { onClick(kanbanBoardData) },
+        onClick = { onClick(kanbanBoard) },
     ) {
         Text(
-            text = kanbanBoardData.title,
-            color = if (isSelected(kanbanBoardData)) Color(0xFF432DD7) else Color(0xFF364153),
+            text = kanbanBoard.title,
+            color = if (isSelected(kanbanBoard)) Color(0xFF432DD7) else Color(0xFF364153),
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             modifier = modifier.fillMaxWidth(),
@@ -92,16 +92,16 @@ private fun KanbanBoardButton(
 @Preview(showBackground = true)
 @Composable
 private fun ProjectSideBarPreview() {
-    val kanbanBoardDatas = remember {
+    val kanbanBoards = remember {
         mutableListOf(
-            KanbanBoardData(title = "Compose1"),
-            KanbanBoardData(title = "Compose2"),
-            KanbanBoardData(title = "Compose3너무너무너무너무너무너무너무너무"),
+            KanbanBoard(title = "Compose1"),
+            KanbanBoard(title = "Compose2"),
+            KanbanBoard(title = "Compose3너무너무너무너무너무너무너무너무"),
         )
     }
 
     ProjectSideBar(
-        kanbanBoardDataList = kanbanBoardDatas,
+        kanbanBoardList = kanbanBoards,
         isSelected = { false },
         onClick = {},
     )

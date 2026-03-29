@@ -13,42 +13,42 @@ import woowacourse.kanban.board.component.DEFAULT_TITLE
 import woowacourse.kanban.board.component.MAX_CONTENT
 import woowacourse.kanban.board.component.MAX_NAME
 import woowacourse.kanban.board.component.MAX_TITLE
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.KanbanBoardData
-import woowacourse.kanban.board.model.Status
-import woowacourse.kanban.board.model.Tag
+import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.domain.KanbanBoard
+import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Tag
 
 @OptIn(ExperimentalTestApi::class)
 class KanbanBoardTest {
 
-    private val kanbanBoardData = KanbanBoardData(
+    private val kanbanBoard = KanbanBoard(
         title = "Compose1",
         boardList = listOf(
-            BoardData(
+            Task(
                 title = "옮겨질 태스크",
                 description = DEFAULT_CONTENT,
                 tags = listOf(Tag("컴포넌트"), Tag("성능")),
                 status = Status.TODO,
                 nickname = DEFAULT_NAME,
             ),
-            BoardData(
+            Task(
                 title = DEFAULT_TITLE,
                 tags = listOf(Tag("컴포넌트"), Tag("성능")),
                 status = Status.TODO,
                 nickname = DEFAULT_NAME,
             ),
-            BoardData(
+            Task(
                 title = DEFAULT_TITLE,
                 description = DEFAULT_CONTENT,
                 status = Status.TODO,
                 nickname = DEFAULT_NAME,
             ),
-            BoardData(
+            Task(
                 title = DEFAULT_TITLE,
                 status = Status.TODO,
                 nickname = DEFAULT_NAME,
             ),
-            BoardData(
+            Task(
                 title = MAX_TITLE,
                 description = MAX_CONTENT,
                 tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
@@ -62,7 +62,7 @@ class KanbanBoardTest {
     fun `To Do 태스크 카드를 Done으로 드래그 앤 드롭을 했을 때 태스크 카드의 상태가 DONE으로 변경된다`() = runComposeUiTest {
 
         setContent {
-            KanbanBoard(kanbanBoardData = kanbanBoardData)
+            KanbanBoard(kanbanBoard = kanbanBoard)
         }
 
         val todoTask = onNodeWithText("옮겨질 태스크")

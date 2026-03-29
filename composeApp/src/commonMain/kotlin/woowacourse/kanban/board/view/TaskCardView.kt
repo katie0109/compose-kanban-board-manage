@@ -12,11 +12,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import woowacourse.kanban.board.component.card.TaskCard
-import woowacourse.kanban.board.model.BoardData
+import woowacourse.kanban.board.domain.Task
 
 @Composable
 fun TaskCardView(
-    boardData: BoardData,
+    task: Task,
     modifier: Modifier = Modifier,
     onDragStart: () -> Unit = {},
     onDragChange: (Offset) -> Unit = {},
@@ -30,7 +30,7 @@ fun TaskCardView(
             // 1) 카드가 화면 어디에 있는지 추적 (스크롤 대응을 위해 상태로 관리)
             .onGloballyPositioned { cardWindowPosition = it.positionInWindow() }
             // 2) 드래그 제스처 감지
-            .pointerInput(boardData.id) {
+            .pointerInput(task.id) {
                 detectDragGestures(
                     onDragStart = { onDragStart() },
                     onDrag = { change, _ ->
@@ -41,6 +41,6 @@ fun TaskCardView(
                     onDragCancel = { onDragCancel() },
                 )
             },
-        board = boardData,
+        task = task,
     )
 }
