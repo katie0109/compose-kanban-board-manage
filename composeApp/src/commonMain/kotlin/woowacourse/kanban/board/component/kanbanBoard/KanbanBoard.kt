@@ -47,12 +47,7 @@ fun KanbanBoard(
 ) {
     val statuses = remember { Status.entries }
     val names = remember { listOf("다이노", "페임스") }
-    var state = remember { KanbanBoardState() }
-
-    suspend fun showSnackBar() {
-        delay(3000.milliseconds)
-        state.isShowSnackBar = false
-    }
+    val state = remember { KanbanBoardState() }
 
     Box {
         Column(
@@ -91,39 +86,66 @@ fun KanbanBoard(
                     )
                 }
             }
-
-            if (state.showDialog) {
-                Dialog(
-                    onDismissRequest = { state.showDialog = false },
-                ) {
-                    TaskCreateDialog(
-                        statuses = statuses,
-                        names = names,
-                        onTaskCreate = {
-                            it.onTaskCreate(onAddTask)
-                            state.showDialog = false
-                            state.text = "새로운 태스크가 생성되었습니다."
-                            state.isShowSnackBar = true
-                        },
-                        onDismissRequest = { state.showDialog = false },
-                    )
-                }
-            }
+            DialogIfVisible(
+                state = state,
+                statuses = statuses,
+                names = names,
+                onAddTask = onAddTask,
+            )
         }
-        LaunchedEffect(state.isShowSnackBar) {
-            if (state.isShowSnackBar) showSnackBar()
-        }
-        if (state.isShowSnackBar) CreateAlertSnackBar(
-            modifier = Modifier
-                .clip(shape = RoundedCornerShape(4.dp))
-                .background(color = Color(0xFF322F35))
-                .padding(start = 16.dp)
-                .size(width = 344.dp, height = 48.dp)
-                .align(alignment = Alignment.BottomCenter),
-            text = state.text,
-            onClick = { state.isShowSnackBar = false },
+        CreateAlertSnackBarVisible(
+            state = state,
+            modifier = Modifier.align(alignment = Alignment.BottomCenter),
         )
     }
+}
+
+@Composable
+private fun DialogIfVisible(
+    state: KanbanBoardState,
+    statuses:List<Status>,
+    names:List<String>,
+    onAddTask: (Task) -> Unit,
+){
+    if (state.showDialog) {
+        Dialog(
+            onDismissRequest = { state.showDialog = false },
+        ) {
+            TaskCreateDialog(
+                statuses = statuses,
+                names = names,
+                onTaskCreate = {
+                    it.onTaskCreate(onAddTask)
+                    state.showDialog = false
+                    state.text = "새로운 태스크가 생성되었습니다."
+                    state.isShowSnackBar = true
+                },
+                onDismissRequest = { state.showDialog = false },
+            )
+        }
+    }
+}
+
+@Composable
+private fun CreateAlertSnackBarVisible(
+    state: KanbanBoardState,
+    modifier: Modifier = Modifier,
+){
+    LaunchedEffect(state.isShowSnackBar) {
+        if (state.isShowSnackBar) {
+            delay(3000.milliseconds)
+            state.isShowSnackBar = false
+        }
+    }
+    if (state.isShowSnackBar) CreateAlertSnackBar(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(4.dp))
+            .background(color = Color(0xFF322F35))
+            .padding(start = 16.dp)
+            .size(width = 344.dp, height = 48.dp),
+        text = state.text,
+        onClick = { state.isShowSnackBar = false },
+    )
 }
 
 @Preview(showBackground = true, widthDp = 1200, heightDp = 800)
