@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +35,7 @@ import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
 import woowacourse.kanban.board.state.DialogState
 import woowacourse.kanban.board.state.KanbanBoardState
+import woowacourse.kanban.board.state.SnackBarState
 import woowacourse.kanban.board.theme.StatusColor
 import java.awt.SystemColor.text
 import javax.swing.JColorChooser.showDialog
@@ -118,8 +120,10 @@ private fun DialogIfVisible(
                 onTaskCreate = {
                     it.onTaskCreate(onAddTask)
                     state.showDialog = false
-                    state.text = "새로운 태스크가 생성되었습니다."
-                    state.isShowSnackBar = true
+                    state.snackBarState = SnackBarState(
+                        isVisible = true,
+                        text = "새로운 태스크가 생성되었습니다."
+                    )
                 },
                 onDismissRequest = { state.showDialog = false },
             )
@@ -133,20 +137,20 @@ private fun CreateAlertSnackBarVisible(
     state: KanbanBoardState,
     modifier: Modifier = Modifier,
 ){
-    LaunchedEffect(state.isShowSnackBar) {
-        if (state.isShowSnackBar) {
+    LaunchedEffect(state.snackBarState.isVisible) {
+        if (state.snackBarState.isVisible) {
             delay(3000.milliseconds)
-            state.isShowSnackBar = false
+            state.snackBarState = SnackBarState(isVisible = false)
         }
     }
-    if (state.isShowSnackBar) CreateAlertSnackBar(
+    if (state.snackBarState.isVisible) CreateAlertSnackBar(
         modifier = modifier
             .clip(shape = RoundedCornerShape(4.dp))
             .background(color = Color(0xFF322F35))
             .padding(start = 16.dp)
             .size(width = 344.dp, height = 48.dp),
-        text = state.text,
-        onClick = { state.isShowSnackBar = false },
+        text = state.snackBarState.text,
+        onClick = { state.snackBarState = SnackBarState(isVisible = false) },
     )
 }
 
