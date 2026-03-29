@@ -39,8 +39,8 @@ import woowacourse.kanban.board.theme.StatusColor
 fun KanbanBoard(
     kanbanBoard: KanbanBoard,
     modifier: Modifier = Modifier,
-    onAddBoardData: (Task) -> Unit = {},
-    onMoveBoardDataStatus: (Int, Status) -> Unit = { _, _ -> },
+    onAddTask: (Task) -> Unit = {},
+    onMoveTaskStatus: (Int, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
     val names = remember { listOf("다이노", "페임스") }
@@ -70,7 +70,7 @@ fun KanbanBoard(
             status = boardDataState.statusValue,
             nickname = boardDataState.nameValue,
         )
-        onAddBoardData(task)
+        onAddTask(task)
     }
 
     suspend fun showSnackBar() {
@@ -129,7 +129,7 @@ fun KanbanBoard(
                                     text = "태스크가 이동되었습니다."
                                     isShowSnackBar = true
                                 }
-                                onMoveBoardDataStatus(draggedTaskId!!, targetStatus)
+                                onMoveTaskStatus(draggedTaskId!!, targetStatus)
                             }
                             currentDragPosition = null
                             draggedTaskId = null
