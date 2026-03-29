@@ -47,4 +47,17 @@ class DialogState {
     fun isSelectedName(name: String): Boolean {
         return nameValue == name
     }
+
+    fun onTaskCreate(onAddTask: (Task) -> Unit) {
+        val task = Task(
+            title = titleInputValue,
+            description = descriptionInputValue,
+            tags = if (tagsInputValue.isNotBlank()) {
+                tagsInputValue.split(",").map { Tag(it) }
+            } else emptyList(),
+            status = statusValue,
+            nickname = nameValue,
+        )
+        onAddTask(task)
+    }
 }

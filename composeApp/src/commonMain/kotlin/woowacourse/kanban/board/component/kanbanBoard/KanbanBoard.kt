@@ -118,7 +118,7 @@ fun KanbanBoard(
                         statuses = statuses,
                         names = names,
                         onTaskCreate = {
-                            onTaskCreate(it, onAddTask)
+                            it.onTaskCreate(onAddTask)
                             state.showDialog = false
                             state.text = "새로운 태스크가 생성되었습니다."
                             state.isShowSnackBar = true
@@ -142,19 +142,6 @@ fun KanbanBoard(
             onClick = { state.isShowSnackBar = false },
         )
     }
-}
-
-private fun onTaskCreate(dialogState: DialogState, onAddTask: (Task) -> Unit) {
-    val task = Task(
-        title = dialogState.titleInputValue,
-        description = dialogState.descriptionInputValue,
-        tags = if (dialogState.tagsInputValue.isNotBlank()) {
-            dialogState.tagsInputValue.split(",").map { Tag(it) }
-        } else emptyList(),
-        status = dialogState.statusValue,
-        nickname = dialogState.nameValue,
-    )
-    onAddTask(task)
 }
 
 @Preview(showBackground = true, widthDp = 1200, heightDp = 800)
