@@ -6,27 +6,27 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
 import org.assertj.core.api.Assertions.assertThat
-import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.state.DialogState
 
 @OptIn(ExperimentalTestApi::class)
 class CommonTextColumnText {
 
     @Test
     fun `텍스트 필드에 입력한 내용이 입력한대로 출력되어야 한다`() = runComposeUiTest {
-        val boardDataState = BoardDataState()
+        val dialogState = DialogState()
 
         setContent {
             CommonTextColumn(
                 title = "제목 *",
-                content = boardDataState.titleInputValue,
-                onValueChange = { boardDataState.titleOnValueChange(it) },
+                content = dialogState.titleInputValue,
+                onValueChange = { dialogState.titleOnValueChange(it) },
                 placeholderText = "태스크 제목을 입력하세요",
-                isError = boardDataState.isTitleError,
+                isError = dialogState.isTitleError,
             )
         }
 
         onNodeWithText("태스크 제목을 입력하세요").performTextInput("제목입니다")
-        assertThat(boardDataState.titleInputValue).isEqualTo("제목입니다")
+        assertThat(dialogState.titleInputValue).isEqualTo("제목입니다")
     }
 
     @Test
@@ -67,15 +67,15 @@ class CommonTextColumnText {
     @Test
     fun `태그가 다섯글자 이하로 입력되면 입력 값이 텍스트 필드에 존재한다`() = runComposeUiTest {
 
-        val boardDataState = BoardDataState()
+        val dialogState = DialogState()
 
         setContent {
             CommonTextColumn(
                 title = "태그",
-                content = boardDataState.tagsInputValue,
-                onValueChange = { boardDataState.tagsOnValueChange(it) },
+                content = dialogState.tagsInputValue,
+                onValueChange = { dialogState.tagsOnValueChange(it) },
                 placeholderText = "태그를 쉼표로 구분하여 입력하세요 (예: 버그, 긴급)",
-                isError = boardDataState.isTagsError,
+                isError = dialogState.isTagsError,
                 isSupportingText = true,
             )
         }
@@ -87,16 +87,16 @@ class CommonTextColumnText {
     @Test
     fun `태그가 여섯글자 이상 입력되면 오류 메세지가 발생한다`() = runComposeUiTest {
 
-        val boardDataState = BoardDataState()
+        val dialogState = DialogState()
 
         setContent {
 
             CommonTextColumn(
                 title = "태그",
-                content = boardDataState.tagsInputValue,
-                onValueChange = { boardDataState.tagsOnValueChange(it) },
+                content = dialogState.tagsInputValue,
+                onValueChange = { dialogState.tagsOnValueChange(it) },
                 placeholderText = "태그를 쉼표로 구분하여 입력하세요 (예: 버그, 긴급)",
-                isError = boardDataState.isTagsError,
+                isError = dialogState.isTagsError,
                 isSupportingText = true,
             )
         }

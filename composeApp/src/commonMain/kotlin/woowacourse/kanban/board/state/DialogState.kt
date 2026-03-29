@@ -7,7 +7,7 @@ import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
 
-class BoardDataState {
+class DialogState {
     var titleInputValue by mutableStateOf("")
     var descriptionInputValue by mutableStateOf("")
     var tagsInputValue by mutableStateOf("")

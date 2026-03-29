@@ -32,7 +32,7 @@ import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
-import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.state.DialogState
 import woowacourse.kanban.board.theme.StatusColor
 
 @Composable
@@ -60,15 +60,15 @@ fun KanbanBoard(
         isShowSnackBar = true
     }
 
-    fun onTaskCreate(boardDataState: BoardDataState) {
+    fun onTaskCreate(dialogState: DialogState) {
         val task = Task(
-            title = boardDataState.titleInputValue,
-            description = boardDataState.descriptionInputValue,
-            tags = if (boardDataState.tagsInputValue.isNotBlank()) {
-                boardDataState.tagsInputValue.split(",").map { Tag(it) }
+            title = dialogState.titleInputValue,
+            description = dialogState.descriptionInputValue,
+            tags = if (dialogState.tagsInputValue.isNotBlank()) {
+                dialogState.tagsInputValue.split(",").map { Tag(it) }
             } else emptyList(),
-            status = boardDataState.statusValue,
-            nickname = boardDataState.nameValue,
+            status = dialogState.statusValue,
+            nickname = dialogState.nameValue,
         )
         onAddTask(task)
     }

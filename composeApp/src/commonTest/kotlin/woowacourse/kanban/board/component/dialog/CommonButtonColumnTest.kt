@@ -7,7 +7,7 @@ import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
 import org.assertj.core.api.Assertions.assertThat
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.state.DialogState
 
 @OptIn(ExperimentalTestApi::class)
 class CommonButtonColumnTest {
@@ -17,14 +17,14 @@ class CommonButtonColumnTest {
 
         val status = Status.entries
 
-        val boardDataState = BoardDataState()
+        val dialogState = DialogState()
 
         setContent {
             CommonButtonColumn(
                 header = "상태 *",
                 items = status,
-                isSelected = { boardDataState.isSelectedStatus(it) },
-                onValueChange = { boardDataState.statusOnValueChange(it) },
+                isSelected = { dialogState.isSelectedStatus(it) },
+                onValueChange = { dialogState.statusOnValueChange(it) },
             ) { status, isSelected, onClick ->
                 StatusButton(status = status, isSelected = isSelected, onClick = onClick)
             }
@@ -32,21 +32,21 @@ class CommonButtonColumnTest {
 
         onNodeWithText("In Progress").performClick()
         waitForIdle()
-        assertThat(boardDataState.statusValue).isEqualTo(Status.IN_PROGRESS)
+        assertThat(dialogState.statusValue).isEqualTo(Status.IN_PROGRESS)
     }
 
     @Test
     fun `페임스가 적힌 버튼을 클릭했을 때 boardDataState는 "페임스" 상태를 가진다`() = runComposeUiTest {
         val names = listOf("다이노", "페임스")
 
-        val boardDataState = BoardDataState()
+        val dialogState = DialogState()
 
         setContent {
             CommonButtonColumn(
                 header = "상태 *",
                 items = names,
-                isSelected = { boardDataState.isSelectedName(it) },
-                onValueChange = { boardDataState.nameOnValueChange(it) },
+                isSelected = { dialogState.isSelectedName(it) },
+                onValueChange = { dialogState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
                 CoachButton(name = name, isSelected = isSelected, onClick = onClick)
             }
@@ -54,6 +54,6 @@ class CommonButtonColumnTest {
 
         onNodeWithText("페임스").performClick()
         waitForIdle()
-        assertThat(boardDataState.nameValue).isEqualTo("페임스")
+        assertThat(dialogState.nameValue).isEqualTo("페임스")
     }
 }

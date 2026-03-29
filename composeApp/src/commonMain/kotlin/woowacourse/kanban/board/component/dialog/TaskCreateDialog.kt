@@ -16,19 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.state.DialogState
 
 @Composable
 fun TaskCreateDialog(
     modifier: Modifier = Modifier,
     statuses: List<Status>,
     names: List<String>,
-    onTaskCreate: (BoardDataState) -> Unit,
+    onTaskCreate: (DialogState) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    val boardDataState = remember { BoardDataState() }
+    val dialogState = remember { DialogState() }
 
-    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank()
+    val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
 
     Column(
         modifier = modifier
@@ -51,47 +51,47 @@ fun TaskCreateDialog(
             CommonTextColumn(
                 modifier = Modifier.fillMaxWidth(),
                 title = "제목 *",
-                content = boardDataState.titleInputValue,
-                onValueChange = { boardDataState.titleOnValueChange(it) },
-                isError = boardDataState.isTitleError,
+                content = dialogState.titleInputValue,
+                onValueChange = { dialogState.titleOnValueChange(it) },
+                isError = dialogState.isTitleError,
                 placeholderText = "태스크 제목을 입력하세요",
             )
             CommonTextColumn(
                 modifier = Modifier.fillMaxWidth().height(116.dp),
                 title = "설명",
-                content = boardDataState.descriptionInputValue,
-                onValueChange = { boardDataState.descriptionOnValueChange(it) },
+                content = dialogState.descriptionInputValue,
+                onValueChange = { dialogState.descriptionOnValueChange(it) },
                 placeholderText = "태스크에 대한 자세한 설명을 입력하세요",
             )
             CommonTextColumn(
                 modifier = Modifier.fillMaxWidth(),
                 title = "태그 *",
-                content = boardDataState.tagsInputValue,
-                onValueChange = { boardDataState.tagsOnValueChange(it) },
-                isError = boardDataState.isTagsError,
+                content = dialogState.tagsInputValue,
+                onValueChange = { dialogState.tagsOnValueChange(it) },
+                isError = dialogState.isTagsError,
                 placeholderText = "태그를 쉼표로 구분하여 입력하세요 (예: 버그, 긴급)",
                 isSupportingText = true,
             )
             CommonButtonColumn(
                 header = "상태 *",
                 items = statuses,
-                isSelected = { boardDataState.isSelectedStatus(it) },
-                onValueChange = { boardDataState.statusOnValueChange(it) },
+                isSelected = { dialogState.isSelectedStatus(it) },
+                onValueChange = { dialogState.statusOnValueChange(it) },
             ) { status, isSelected, onClick ->
                 StatusButton(status = status, isSelected = isSelected, onClick = onClick)
             }
             CommonButtonColumn(
                 header = "담당자 *",
                 items = names,
-                isSelected = { boardDataState.isSelectedName(it) },
-                onValueChange = { boardDataState.nameOnValueChange(it) },
+                isSelected = { dialogState.isSelectedName(it) },
+                onValueChange = { dialogState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
                 CoachButton(name = name, isSelected = isSelected, onClick = onClick)
             }
             HorizontalDivider()
             FooterRow(
                 onCancel = onDismissRequest,
-                onCreate = { onTaskCreate(boardDataState) },
+                onCreate = { onTaskCreate(dialogState) },
                 isCreateError = isCreateError,
             )
         }
