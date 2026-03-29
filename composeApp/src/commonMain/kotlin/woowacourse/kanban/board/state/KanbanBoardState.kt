@@ -8,6 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import woowacourse.kanban.board.domain.Status
+import kotlin.collections.component1
+import kotlin.collections.component2
 
 class KanbanBoardState {
 
@@ -20,4 +22,24 @@ class KanbanBoardState {
     var currentDragPosition by mutableStateOf<Offset?>(null)
     val columnBounds = mutableStateMapOf<Status, Rect>()
     var draggedTaskSourceStatus by mutableStateOf<Status?>(null)
+
+    fun onTaskDragEnd(state: KanbanBoardState, onMoveTaskStatus: (Int, Status) -> Unit){
+        val dropPosition = state.currentDragPosition ?: run {
+            state.draggedTaskId = null
+            return
+        }
+        val targetStatus = state.columnBounds.entries
+            .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
+
+        if (targetStatus != null && state.draggedTaskId != null) {
+            if (targetStatus != state.draggedTaskSourceStatus) {
+                state.text = "태스크가 이동되었습니다."
+                state.isShowSnackBar = true
+            }
+            onMoveTaskStatus(state.draggedTaskId!!, targetStatus)
+        }
+        state.currentDragPosition = null
+        state.draggedTaskId = null
+        state.draggedTaskSourceStatus = null
+    }
 }

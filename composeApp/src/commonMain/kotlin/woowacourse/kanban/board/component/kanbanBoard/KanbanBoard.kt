@@ -83,25 +83,7 @@ fun KanbanBoard(
                             state.draggedTaskSourceStatus = task.status
                         },
                         onTaskDragChange = { pos -> state.currentDragPosition = pos },
-                        onTaskDragEnd = {
-                            val dropPosition = state.currentDragPosition ?: run {
-                                state.draggedTaskId = null
-                                return@StatusCardManageBox
-                            }
-                            val targetStatus = state.columnBounds.entries
-                                .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
-
-                            if (targetStatus != null && state.draggedTaskId != null) {
-                                if (targetStatus != state.draggedTaskSourceStatus) {
-                                    state.text = "태스크가 이동되었습니다."
-                                    state.isShowSnackBar = true
-                                }
-                                onMoveTaskStatus(state.draggedTaskId!!, targetStatus)
-                            }
-                            state.currentDragPosition = null
-                            state.draggedTaskId = null
-                            state.draggedTaskSourceStatus = null
-                        },
+                        onTaskDragEnd = { state.onTaskDragEnd(state, onMoveTaskStatus) },
                         onTaskDragCancel = {
                             state.currentDragPosition = null
                             state.draggedTaskId = null
