@@ -100,6 +100,7 @@ fun KanbanBoard(
     }
 }
 
+//Dialog 표시 여부 책임 분리
 @Composable
 private fun DialogIfVisible(
     state: KanbanBoardState,
@@ -126,6 +127,7 @@ private fun DialogIfVisible(
     }
 }
 
+//스낵바 표시 여부 책임 분리
 @Composable
 private fun CreateAlertSnackBarVisible(
     state: KanbanBoardState,
@@ -138,7 +140,7 @@ private fun CreateAlertSnackBarVisible(
         }
     }
     if (state.isShowSnackBar) CreateAlertSnackBar(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(4.dp))
             .background(color = Color(0xFF322F35))
             .padding(start = 16.dp)
