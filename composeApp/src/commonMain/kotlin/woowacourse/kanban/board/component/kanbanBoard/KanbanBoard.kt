@@ -51,9 +51,11 @@ fun KanbanBoard(
     val names = remember { listOf("다이노", "페임스") }
     val state = remember { KanbanBoardState() }
 
-    Box {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
         Column(
-            modifier = modifier.fillMaxSize().background(color = Color.White),
+            modifier = Modifier.fillMaxSize().background(color = Color.White),
         ) {
             KanbanBoardTitleBar(
                 title = kanbanBoard.title,
