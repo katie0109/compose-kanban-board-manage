@@ -5,16 +5,16 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
-import woowacourse.kanban.board.component.DEFAULT_CONTENT
-import woowacourse.kanban.board.component.DEFAULT_NAME
-import woowacourse.kanban.board.component.DEFAULT_TITLE
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
 
+private const val DEFAULT_TITLE = "LazyColumn 컴포넌트 구현"
+private const val DEFAULT_CONTENT = "세로 스크롤 가능한 리스트 컴포넌트를 만들고 성능 최적화를 적용합니다."
+private const val DEFAULT_NAME = "다이노"
+
 @OptIn(ExperimentalTestApi::class)
 class TaskCardTest {
-
     private fun createBoard(
         title: String = DEFAULT_TITLE,
         content: String = DEFAULT_CONTENT,
