@@ -14,13 +14,12 @@ class KanbanBoardState {
 
     var showDialog by mutableStateOf(false)
     var snackBarState by mutableStateOf(SnackBarState())
-    //드래그 앤 드롭 상태
-    var draggedTaskId by mutableStateOf<Int?>(null)
+    var draggedTaskId by mutableStateOf<String?>(null)
     var currentDragPosition by mutableStateOf<Offset?>(null)
     val columnBounds = mutableStateMapOf<Status, Rect>()
     var draggedTaskSourceStatus by mutableStateOf<Status?>(null)
 
-    fun onTaskDragEnd(state: KanbanBoardState, onMoveTaskStatus: (Int, Status) -> Unit){
+    fun onTaskDragEnd(state: KanbanBoardState, onMoveTaskStatus: (String, Status) -> Unit){
         val dropPosition = state.currentDragPosition ?: run {
             state.draggedTaskId = null
             return

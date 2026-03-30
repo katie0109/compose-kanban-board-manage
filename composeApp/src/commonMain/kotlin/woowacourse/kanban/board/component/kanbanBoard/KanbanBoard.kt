@@ -45,7 +45,7 @@ fun KanbanBoard(
     kanbanBoard: KanbanBoard,
     modifier: Modifier = Modifier,
     onAddTask: (Task) -> Unit = {},
-    onMoveTaskStatus: (Int, Status) -> Unit = { _, _ -> },
+    onMoveTaskStatus: (String, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
     val names = remember { listOf("다이노", "페임스") }
