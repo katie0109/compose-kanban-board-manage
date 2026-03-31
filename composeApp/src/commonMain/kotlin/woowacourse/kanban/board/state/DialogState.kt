@@ -17,6 +17,9 @@ class DialogState {
     var isTitleError by mutableStateOf(false)
     var isTagsError by mutableStateOf(false)
 
+    var createdTask by mutableStateOf<Task?>(null)
+
+
     fun titleOnValueChange(value: String) {
         titleInputValue = value
         isTitleError = Task.isTitleError(titleInputValue)
@@ -48,8 +51,8 @@ class DialogState {
         return nameValue == name
     }
 
-    fun onTaskCreate(onAddTask: (Task) -> Unit) {
-        val task = Task(
+    fun onTaskCreate() {
+        createdTask = Task(
             title = titleInputValue,
             description = descriptionInputValue,
             tags = if (tagsInputValue.isNotBlank()) {
@@ -58,6 +61,5 @@ class DialogState {
             status = statusValue,
             nickname = nameValue,
         )
-        onAddTask(task)
     }
 }

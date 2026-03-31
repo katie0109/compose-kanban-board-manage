@@ -10,12 +10,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.state.DialogState
 
 @Composable
@@ -23,13 +25,18 @@ fun TaskCreateDialog(
     modifier: Modifier = Modifier,
     statuses: List<Status>,
     names: List<String>,
-    onTaskCreate: (DialogState) -> Unit,
+    onTaskCreate: (Task) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val dialogState = remember { DialogState() }
-
     val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
 
+    LaunchedEffect(dialogState.createdTask) {
+        val task = dialogState.createdTask
+        if (task != null) {
+            onTaskCreate(task)  // 외부로 Task 전달
+        }
+    }
     Column(
         modifier = modifier
             .background(color = Color.White)
@@ -91,7 +98,7 @@ fun TaskCreateDialog(
             HorizontalDivider()
             FooterRow(
                 onCancel = onDismissRequest,
-                onCreate = { onTaskCreate(dialogState) },
+                onCreate = dialogState::onTaskCreate,
                 isCreateError = isCreateError,
             )
         }

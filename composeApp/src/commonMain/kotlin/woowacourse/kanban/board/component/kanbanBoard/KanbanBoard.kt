@@ -120,7 +120,7 @@ private fun DialogIfVisible(
                 statuses = statuses,
                 names = names,
                 onTaskCreate = {
-                    it.onTaskCreate(onAddTask)
+                    task -> onAddTask(task);
                     state.showDialog = false
                     state.snackBarState = SnackBarState(
                         isVisible = true,
