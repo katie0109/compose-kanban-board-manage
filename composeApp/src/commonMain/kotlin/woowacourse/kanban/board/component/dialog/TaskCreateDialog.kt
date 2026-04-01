@@ -34,7 +34,7 @@ fun TaskCreateDialog(
     LaunchedEffect(dialogState.createdTask) {
         val task = dialogState.createdTask
         if (task != null) {
-            onTaskCreate(task)  // 외부로 Task 전달
+            onTaskCreate(task)
         }
     }
     Column(

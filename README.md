@@ -3,9 +3,9 @@
 ## 기능 구현 목록
 
 1. Review 상태 추가
-- [ ] 상태에 review를 추가한다
-- [ ] kanbanboard에 review 상태 박스를 추가한다.
-- [ ] 다이얼로그 상태 선택 목록에 review 를 추가한다.
+- [x] 상태에 review를 추가한다
+- [x] kanbanboard에 review 상태 박스를 추가한다.
+- [x] 다이얼로그 상태 선택 목록에 review 를 추가한다.
 
 2. 상태별 태스크 특징 적용
 - [ ] 상태별 삭제 가능 여부 규칙을 적용한다. (To Do, In Progress만 삭제 가능)
