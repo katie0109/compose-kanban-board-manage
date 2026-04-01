@@ -33,6 +33,7 @@ import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Tag
+import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.state.DialogState
 import woowacourse.kanban.board.state.KanbanBoardState
 import woowacourse.kanban.board.state.SnackBarState
@@ -51,6 +52,7 @@ fun KanbanBoard(
     val names = remember { listOf("다이노", "페임스") }
     val state = remember { KanbanBoardState() }
 
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -62,7 +64,9 @@ fun KanbanBoard(
                 progress = kanbanBoard.progress(),
                 doneCount = kanbanBoard.doneCount(),
                 totalStatusCount = kanbanBoard.totalStatusCount(),
-                onCreateClick = { state.showDialog = true },
+                onCreateClick = {
+                    state.showDialog = true
+                    state.dialogState.mode = DialogMode.CREATE },
             )
             Row(
                 modifier = Modifier.padding(24.dp),
@@ -86,6 +90,10 @@ fun KanbanBoard(
                         onTaskDragCancel = {
                             state.currentDragPosition = null
                             state.draggedTaskId = null
+                        },
+                        onTaskClick = { _ ->
+                            state.showDialog = true
+                            state.dialogState.mode = DialogMode.EDIT
                         },
                     )
                 }
@@ -128,6 +136,7 @@ private fun DialogIfVisible(
                     )
                 },
                 onDismissRequest = { state.showDialog = false },
+                dialogState = state.dialogState,
             )
         }
     }
