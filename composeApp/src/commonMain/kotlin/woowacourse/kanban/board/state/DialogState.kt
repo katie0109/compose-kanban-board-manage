@@ -2,6 +2,7 @@ package woowacourse.kanban.board.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
@@ -16,9 +17,8 @@ class DialogState {
 
     var isTitleError by mutableStateOf(false)
     var isTagsError by mutableStateOf(false)
-
     var createdTask by mutableStateOf<Task?>(null)
-
+    var mode by mutableStateOf(DialogMode.CREATE)
 
     fun titleOnValueChange(value: String) {
         titleInputValue = value
@@ -62,4 +62,8 @@ class DialogState {
             nickname = nameValue,
         )
     }
+}
+
+enum class DialogMode {
+    CREATE, EDIT
 }

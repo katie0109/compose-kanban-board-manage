@@ -18,12 +18,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.theme.CREATE_BG
 import woowacourse.kanban.board.theme.CREATE_BG_ERROR
 import woowacourse.kanban.board.theme.PRIMARY_TEXT
 
+
 @Composable
-fun FooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
+fun FooterRow(mode:DialogMode, onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean) {
+    when(mode){
+        DialogMode.CREATE -> CreateFooterRow(
+            onCancel = onCancel,
+            onCreate = onCreate,
+            isCreateError = isCreateError,
+        )
+        DialogMode.EDIT -> EditFooterRow(
+            onCancel = onCancel,
+            onCreate = onCreate,
+            isCreateError = isCreateError,
+        )
+    }
+}
+@Composable
+private fun CreateFooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         FooterButton(
             modifier = Modifier,
@@ -43,6 +60,40 @@ fun FooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean
         )
     }
 }
+
+//여기 파라미터 바꿔야함
+@Composable
+private fun EditFooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        FooterButton(
+            modifier = Modifier,
+            text = "취소",
+            backgroundColor = Color.White,
+            textColor = Color(PRIMARY_TEXT),
+            onClick = onCancel,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        FooterButton(
+            modifier = Modifier,
+            text = "수정",
+            textColor = Color.White,
+            backgroundColor = Color(0xFFDB6365),
+            onClick = onCreate,
+            enabled = !isCreateError,
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        FooterButton(
+            modifier = Modifier,
+            text = "삭제",
+            textColor = Color.White,
+            backgroundColor = Color(0xFF4F39F6),
+            onClick = onCreate,
+            enabled = !isCreateError,
+        )
+    }
+}
+
+
 
 @Composable
 private fun FooterButton(
@@ -70,7 +121,7 @@ private fun FooterButton(
 @Preview(showBackground = true)
 @Composable
 private fun CreateEnableFooterRowPreview() {
-    FooterRow(
+    CreateFooterRow(
         onCancel = {},
         onCreate = {},
         isCreateError = false,

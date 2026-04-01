@@ -14,6 +14,7 @@ class KanbanBoardState {
 
     var showDialog by mutableStateOf(false)
     var snackBarState by mutableStateOf(SnackBarState())
+    var dialogState by mutableStateOf(DialogState())
     var draggedTaskId by mutableStateOf<String?>(null)
     var currentDragPosition by mutableStateOf<Offset?>(null)
     val columnBounds = mutableStateMapOf<Status, Rect>()

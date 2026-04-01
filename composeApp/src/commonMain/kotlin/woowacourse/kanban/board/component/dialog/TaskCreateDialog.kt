@@ -11,13 +11,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Task
+import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.state.DialogState
 
 @Composable
@@ -27,16 +31,18 @@ fun TaskCreateDialog(
     names: List<String>,
     onTaskCreate: (Task) -> Unit,
     onDismissRequest: () -> Unit,
+    dialogState: DialogState,
 ) {
-    val dialogState = remember { DialogState() }
     val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
 
     LaunchedEffect(dialogState.createdTask) {
         val task = dialogState.createdTask
         if (task != null) {
             onTaskCreate(task)
+            dialogState.createdTask = null
         }
     }
+
     Column(
         modifier = modifier
             .background(color = Color.White)
@@ -48,6 +54,7 @@ fun TaskCreateDialog(
                 horizontal = 24.dp,
             )
                 .fillMaxWidth(),
+            title = if(dialogState.mode == DialogMode.CREATE) "새 태스크 생성" else "기존 태스크 수정",
             onClick = onDismissRequest,
         )
         HorizontalDivider()
@@ -100,6 +107,7 @@ fun TaskCreateDialog(
                 onCancel = onDismissRequest,
                 onCreate = dialogState::onTaskCreate,
                 isCreateError = isCreateError,
+                mode = dialogState.mode
             )
         }
     }
@@ -113,6 +121,7 @@ private fun TaskCreateDialogPreview(){
         onDismissRequest = {},
         statuses = Status.entries,
         names = listOf("다이노", "페임스"),
+        dialogState = DialogState(),
         modifier = Modifier
     )
 }

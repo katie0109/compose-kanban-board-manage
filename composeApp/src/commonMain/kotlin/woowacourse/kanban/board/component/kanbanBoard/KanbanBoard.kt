@@ -66,7 +66,9 @@ fun KanbanBoard(
                 totalStatusCount = kanbanBoard.totalStatusCount(),
                 onCreateClick = {
                     state.showDialog = true
-                    state.dialogState.mode = DialogMode.CREATE },
+                    state.dialogState.mode = DialogMode.CREATE
+
+                                },
             )
             Row(
                 modifier = Modifier.padding(24.dp),
