@@ -35,6 +35,12 @@ fun TaskCreateDialog(
 ) {
     val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
 
+    val filteredNames = if (dialogState.statusValue == Status.TODO) {
+        listOf("없음") + names
+    } else {
+        names
+    }
+
     LaunchedEffect(dialogState.createdTask) {
         val task = dialogState.createdTask
         if (task != null) {
@@ -96,7 +102,7 @@ fun TaskCreateDialog(
             }
             CommonButtonColumn(
                 header = "담당자 *",
-                items = names,
+                items = filteredNames,
                 isSelected = { dialogState.isSelectedName(it) },
                 onValueChange = { dialogState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
