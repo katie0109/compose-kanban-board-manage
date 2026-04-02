@@ -54,6 +54,13 @@ class DialogState {
         return nameValue == name
     }
 
+    fun selectMode(mode: DialogMode){
+        when(mode){
+            DialogMode.CREATE -> onTaskCreate()
+            DialogMode.EDIT -> onTaskEdit()
+        }
+    }
+
     fun onTaskCreate() {
         createdTask = Task(
             title = titleInputValue,
@@ -64,6 +71,19 @@ class DialogState {
             status = statusValue,
             nickname = nameValue,
         )
+    }
+
+    fun onTaskEdit(){
+        editTask = editTask?.copy(
+            title = titleInputValue,
+            description = descriptionInputValue,
+            tags = if (tagsInputValue.isNotBlank()) {
+                tagsInputValue.split(",").map { Tag(it) }
+            } else emptyList(),
+            status = statusValue,
+            nickname = nameValue,
+        )
+        createdTask = editTask
     }
 
     fun loadTaskData(task: Task){

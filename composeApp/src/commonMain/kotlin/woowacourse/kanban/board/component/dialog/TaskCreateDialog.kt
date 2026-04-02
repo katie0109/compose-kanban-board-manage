@@ -30,6 +30,7 @@ fun TaskCreateDialog(
     statuses: List<Status>,
     names: List<String>,
     onTaskCreate: (Task) -> Unit,
+    onEditTask: (Task) -> Unit,
     onDismissRequest: () -> Unit,
     dialogState: DialogState,
 ) {
@@ -44,7 +45,10 @@ fun TaskCreateDialog(
     LaunchedEffect(dialogState.createdTask) {
         val task = dialogState.createdTask
         if (task != null) {
-            onTaskCreate(task)
+            when(dialogState.mode){
+                DialogMode.CREATE -> onTaskCreate(task)
+                DialogMode.EDIT -> onEditTask(task)
+            }
             dialogState.createdTask = null
         }
     }
@@ -111,9 +115,9 @@ fun TaskCreateDialog(
             HorizontalDivider()
             FooterRow(
                 onCancel = onDismissRequest,
-                onCreate = dialogState::onTaskCreate,
+                onCreate = { dialogState.selectMode(dialogState.mode) },
                 isCreateError = isCreateError,
-                mode = dialogState.mode
+                mode = dialogState.mode,
             )
         }
     }
@@ -128,6 +132,7 @@ private fun TaskCreateDialogPreview(){
         statuses = Status.entries,
         names = listOf("다이노", "페임스"),
         dialogState = DialogState(),
+        onEditTask = {},
         modifier = Modifier
     )
 }

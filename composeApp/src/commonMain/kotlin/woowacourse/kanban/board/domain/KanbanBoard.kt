@@ -12,6 +12,12 @@ data class KanbanBoard(
 
     fun addTask(task: Task): KanbanBoard = copy(taskList = taskList + task)
 
+    fun updateTask(updatedTask: Task): KanbanBoard {
+        val updatedTaskList = taskList.map { task ->
+            if (task.id == updatedTask.id) updatedTask else task
+        }
+        return copy(taskList = updatedTaskList)
+    }
     fun moveTaskStatus(taskId: String, targetStatus: Status): KanbanBoard {
         val targetIndex = taskList.indexOfFirst { it.id == taskId }
         if (targetIndex == -1) return this

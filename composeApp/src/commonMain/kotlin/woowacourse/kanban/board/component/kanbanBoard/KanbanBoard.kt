@@ -46,6 +46,7 @@ fun KanbanBoard(
     kanbanBoard: KanbanBoard,
     modifier: Modifier = Modifier,
     onAddTask: (Task) -> Unit = {},
+    onEditTask: (Task) -> Unit = {},
     onMoveTaskStatus: (String, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
@@ -106,6 +107,7 @@ fun KanbanBoard(
                 statuses = statuses,
                 names = names,
                 onAddTask = onAddTask,
+                onEditTask = onEditTask,
             )
         }
         CreateAlertSnackBarVisible(
@@ -122,6 +124,7 @@ private fun DialogIfVisible(
     statuses:List<Status>,
     names:List<String>,
     onAddTask: (Task) -> Unit,
+    onEditTask: (Task) -> Unit,
 ){
     if (state.showDialog) {
         Dialog(
@@ -138,6 +141,16 @@ private fun DialogIfVisible(
                         isVisible = true,
                         text = "새로운 태스크가 생성되었습니다."
                     )
+                },
+                onEditTask = {
+                    task -> onEditTask(task);
+                    state.showDialog = false
+                    state.dialogState.resetDialog()
+                    state.snackBarState = SnackBarState(
+                        isVisible = true,
+                        text = "태스크가 수정되었습니다."
+                    )
+
                 },
                 onDismissRequest = {
                     state.showDialog = false
