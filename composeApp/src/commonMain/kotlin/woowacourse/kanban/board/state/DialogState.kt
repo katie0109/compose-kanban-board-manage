@@ -20,6 +20,9 @@ class DialogState {
     var createdTask by mutableStateOf<Task?>(null)
     var mode by mutableStateOf(DialogMode.CREATE)
 
+    var editTask by mutableStateOf<Task?>(null)
+
+
     fun titleOnValueChange(value: String) {
         titleInputValue = value
         isTitleError = Task.isTitleError(titleInputValue)
@@ -61,6 +64,28 @@ class DialogState {
             status = statusValue,
             nickname = nameValue,
         )
+    }
+
+    fun loadTaskData(task: Task){
+        titleInputValue = task.title
+        descriptionInputValue = task.description
+        tagsInputValue = task.tags.joinToString(", ") { it.text }
+        statusValue = task.status
+        nameValue = task.nickname
+        editTask = task
+    }
+
+    fun resetDialog() {
+        titleInputValue = ""
+        descriptionInputValue = ""
+        tagsInputValue = ""
+        statusValue = Status.TODO
+        nameValue = "다이노"
+        isTitleError = false
+        isTagsError = false
+        createdTask = null
+        editTask = null
+        mode = DialogMode.CREATE
     }
 }
 

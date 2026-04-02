@@ -93,9 +93,10 @@ fun KanbanBoard(
                             state.currentDragPosition = null
                             state.draggedTaskId = null
                         },
-                        onTaskClick = { _ ->
+                        onTaskClick = { task ->
                             state.showDialog = true
                             state.dialogState.mode = DialogMode.EDIT
+                            state.dialogState.loadTaskData(task)
                         },
                     )
                 }
@@ -132,12 +133,16 @@ private fun DialogIfVisible(
                 onTaskCreate = {
                     task -> onAddTask(task);
                     state.showDialog = false
+                    state.dialogState.resetDialog()
                     state.snackBarState = SnackBarState(
                         isVisible = true,
                         text = "새로운 태스크가 생성되었습니다."
                     )
                 },
-                onDismissRequest = { state.showDialog = false },
+                onDismissRequest = {
+                    state.showDialog = false
+                    state.dialogState.resetDialog()
+                },
                 dialogState = state.dialogState,
             )
         }
