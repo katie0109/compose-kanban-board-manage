@@ -8,6 +8,7 @@ import androidx.compose.ui.test.runComposeUiTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import woowacourse.kanban.board.component.dialog.FooterRow
+import woowacourse.kanban.board.state.DialogMode
 
 @OptIn(ExperimentalTestApi::class)
 class CreateAlertSnackBarTest {
@@ -22,7 +23,9 @@ class CreateAlertSnackBarTest {
                 onCreate = {
                     isShowSnackBar = true
                 },
+                onDelete = {},
                 isCreateError = false,
+                mode = DialogMode.CREATE,
             )
         }
         onNodeWithText("생성").performClick()
