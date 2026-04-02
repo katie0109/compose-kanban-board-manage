@@ -88,12 +88,15 @@ fun KanbanBoard(
                         onTaskDragStart = { task ->
                             state.draggedTaskId = task.id
                             state.draggedTaskSourceStatus = task.status
+                            state.draggedTaskNickname = task.nickname
                         },
                         onTaskDragChange = { pos -> state.currentDragPosition = pos },
                         onTaskDragEnd = { state.onTaskDragEnd(state, onMoveTaskStatus) },
                         onTaskDragCancel = {
                             state.currentDragPosition = null
                             state.draggedTaskId = null
+                            state.draggedTaskNickname = null
+                            state.draggedTaskSourceStatus = null
                         },
                         onTaskClick = { task ->
                             state.showDialog = true

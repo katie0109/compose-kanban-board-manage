@@ -6,30 +6,19 @@ enum class Status(val state: String) {
     REVIEW("Review"),
     DONE("Done"),
 }
-
-fun Status.isDeletable(): Boolean {
-    return when (this) {
-        Status.TODO, Status.IN_PROGRESS -> true
-        Status.REVIEW, Status.DONE -> false
-    }
-}
-
-fun Status.isAssigneeRequired():Boolean{
+fun Status?.isMoveTodoToInProgress(status: Status):Boolean{
     return when(this){
-        Status.TODO -> false
-        Status.IN_PROGRESS, Status.REVIEW, Status.DONE -> true
+        Status.TODO -> status==Status.IN_PROGRESS
+        else -> false
     }
 }
 
-fun Status.isStatusTransitionAllowed(status: Status): Boolean {
+fun Status?.isStatusTransitionAllowed(status: Status): Boolean {
     return when (this) {
         Status.TODO -> status == Status.IN_PROGRESS
         Status.IN_PROGRESS -> status == Status.TODO || status ==Status.REVIEW
         Status.REVIEW -> status == Status.IN_PROGRESS || status == Status.DONE
         Status.DONE -> status == Status.TODO
+        else -> false
     }
-}
-
-fun Status.isStatusTransitionBlocked(status: Status): Boolean {
-    return !this.isStatusTransitionAllowed(status)
 }

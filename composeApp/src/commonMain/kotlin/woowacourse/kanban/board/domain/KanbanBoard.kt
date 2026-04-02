@@ -21,6 +21,7 @@ data class KanbanBoard(
 
     fun deleteTask(deleteTask: Task): KanbanBoard =
         copy(taskList = taskList.filterNot { task -> task.id == deleteTask.id })
+
     fun moveTaskStatus(taskId: String, targetStatus: Status): KanbanBoard {
         val targetIndex = taskList.indexOfFirst { it.id == taskId }
         if (targetIndex == -1) return this

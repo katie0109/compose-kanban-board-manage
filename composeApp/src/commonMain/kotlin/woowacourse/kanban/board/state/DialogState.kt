@@ -23,8 +23,6 @@ class DialogState {
     var editTask by mutableStateOf<Task?>(null)
     var deleteTask by mutableStateOf<Task?>(null)
 
-
-
     fun titleOnValueChange(value: String) {
         titleInputValue = value
         isTitleError = Task.isTitleError(titleInputValue)
