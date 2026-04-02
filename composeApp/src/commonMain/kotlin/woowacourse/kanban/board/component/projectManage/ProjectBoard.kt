@@ -32,6 +32,9 @@ fun ProjectBoard() {
             onEditTask = { task ->
                 state.updateSelectedBoard { it.updateTask(task) }
             },
+            onDeleteTask = {
+                task -> state.updateSelectedBoard { it.deleteTask(task) }
+            },
             onMoveTaskStatus = { taskId, targetStatus ->
                 state.updateSelectedBoard { it.moveTaskStatus(taskId, targetStatus) }
             },

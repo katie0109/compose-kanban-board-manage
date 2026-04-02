@@ -25,7 +25,7 @@ import woowacourse.kanban.board.theme.PRIMARY_TEXT
 
 
 @Composable
-fun FooterRow(mode:DialogMode, onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean) {
+fun FooterRow(mode:DialogMode, onDelete: () -> Unit,onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean) {
     when(mode){
         DialogMode.CREATE -> CreateFooterRow(
             onCancel = onCancel,
@@ -36,6 +36,7 @@ fun FooterRow(mode:DialogMode, onCancel: () -> Unit, onCreate: () -> Unit, isCre
             onCancel = onCancel,
             onCreate = onCreate,
             isCreateError = isCreateError,
+            onDelete = onDelete,
         )
     }
 }
@@ -61,9 +62,8 @@ private fun CreateFooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreate
     }
 }
 
-//여기 파라미터 바꿔야함
 @Composable
-private fun EditFooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
+private fun EditFooterRow(onDelete: () -> Unit, onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         FooterButton(
             modifier = Modifier,
@@ -87,7 +87,7 @@ private fun EditFooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateEr
             text = "삭제",
             textColor = Color.White,
             backgroundColor = Color(0xFF4F39F6),
-            onClick = onCreate,
+            onClick = onDelete,
             enabled = !isCreateError,
         )
     }

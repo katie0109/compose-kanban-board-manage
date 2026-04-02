@@ -21,6 +21,8 @@ class DialogState {
     var mode by mutableStateOf(DialogMode.CREATE)
 
     var editTask by mutableStateOf<Task?>(null)
+    var deleteTask by mutableStateOf<Task?>(null)
+
 
 
     fun titleOnValueChange(value: String) {
@@ -86,6 +88,12 @@ class DialogState {
         createdTask = editTask
     }
 
+    fun onTaskDelete(){
+        val task = editTask ?: return
+
+        deleteTask = task
+    }
+
     fun loadTaskData(task: Task){
         titleInputValue = task.title
         descriptionInputValue = task.description
@@ -105,6 +113,7 @@ class DialogState {
         isTagsError = false
         createdTask = null
         editTask = null
+        deleteTask = null
         mode = DialogMode.CREATE
     }
 }

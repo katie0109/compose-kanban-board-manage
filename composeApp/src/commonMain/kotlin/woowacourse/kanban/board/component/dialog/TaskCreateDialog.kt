@@ -31,6 +31,7 @@ fun TaskCreateDialog(
     names: List<String>,
     onTaskCreate: (Task) -> Unit,
     onEditTask: (Task) -> Unit,
+    onDeleteTask: (Task) -> Unit,
     onDismissRequest: () -> Unit,
     dialogState: DialogState,
 ) {
@@ -50,6 +51,14 @@ fun TaskCreateDialog(
                 DialogMode.EDIT -> onEditTask(task)
             }
             dialogState.createdTask = null
+        }
+    }
+
+    LaunchedEffect(dialogState.deleteTask) {
+        val task = dialogState.deleteTask
+        if (task != null) {
+            onDeleteTask(task)
+            dialogState.deleteTask = null
         }
     }
 
@@ -116,6 +125,7 @@ fun TaskCreateDialog(
             FooterRow(
                 onCancel = onDismissRequest,
                 onCreate = { dialogState.selectMode(dialogState.mode) },
+                onDelete = { dialogState.onTaskDelete() },
                 isCreateError = isCreateError,
                 mode = dialogState.mode,
             )
@@ -133,6 +143,7 @@ private fun TaskCreateDialogPreview(){
         names = listOf("다이노", "페임스"),
         dialogState = DialogState(),
         onEditTask = {},
+        onDeleteTask = {},
         modifier = Modifier
     )
 }
