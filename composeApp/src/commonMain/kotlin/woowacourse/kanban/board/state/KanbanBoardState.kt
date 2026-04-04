@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.domain.Task
 import kotlin.collections.component1
 import kotlin.collections.component2
 
@@ -35,43 +34,14 @@ class KanbanBoardState {
                 return
             }
 
-        val sourceStatus = state.draggedTaskSourceStatus
         val taskId = state.draggedTaskId
-        val assigneeNickname = state.draggedTaskNickname ?: Task.UNASSIGNED_NICKNAME
 
-        if (sourceStatus == null || taskId == null) {
+        if (taskId == null) {
             resetDragState()
             return
         }
 
-        val dragTask = Task(
-            id = taskId,
-            title = "",
-            status = sourceStatus,
-            nickname = assigneeNickname,
-        )
-
-        when {
-            dragTask.requiresAssigneeFor(targetStatus) && !dragTask.hasAssignee() -> {
-                snackBarState = SnackBarState(
-                    isVisible = true,
-                    text = "담당자를 지정해야 상태를 옮길 수 있습니다."
-                )
-            }
-            dragTask.canMoveTo(targetStatus) -> {
-                snackBarState = SnackBarState(
-                    isVisible = true,
-                    text = "태스크가 이동되었습니다."
-                )
-                onMoveTaskStatus(taskId, targetStatus)
-            }
-            else -> {
-                snackBarState = SnackBarState(
-                    isVisible = true,
-                    text = "해당 상태로 옮길 수 없습니다."
-                )
-            }
-        }
+        onMoveTaskStatus(taskId, targetStatus)
         resetDragState()
     }
 
