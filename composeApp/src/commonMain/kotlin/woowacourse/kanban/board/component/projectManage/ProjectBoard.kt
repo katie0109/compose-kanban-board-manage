@@ -26,18 +26,10 @@ fun ProjectBoard() {
         VerticalDivider()
         KanbanBoard(
             state.selectedKanbanBoardTask,
-            onAddTask = { task ->
-                state.updateSelectedBoard { it.addTask(task) }
-            },
-            onEditTask = { task ->
-                state.updateSelectedBoard { it.updateTask(task) }
-            },
-            onDeleteTask = {
-                task -> state.updateSelectedBoard { it.deleteTask(task) }
-            },
-            onMoveTaskStatus = { taskId, targetStatus ->
-                state.updateSelectedBoard { it.moveTaskStatus(taskId, targetStatus) }
-            },
+            onAddTask = { task -> state.addTask(task) },
+            onEditTask = { task -> state.editTask(task) },
+            onDeleteTask = { task -> state.deleteTask(task) },
+            onMoveTaskStatus = { taskId, targetStatus -> state.moveTaskStatus(taskId, targetStatus) },
         )
     }
 }
