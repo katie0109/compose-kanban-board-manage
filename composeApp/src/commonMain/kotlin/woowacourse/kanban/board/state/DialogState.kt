@@ -34,7 +34,7 @@ class DialogState {
 
     fun tagsOnValueChange(value: String) {
         tagsInputValue = value
-        val tags = if (tagsInputValue.isNotBlank()) tagsInputValue.split(",") else emptyList()
+        val tags = parseTagTexts()
         isTagsError = tags.any { Tag.isTagError(it) } || Task.isTagsError(tags.map { Tag(it) })
     }
 
@@ -65,9 +65,7 @@ class DialogState {
         createdTask = Task(
             title = titleInputValue,
             description = descriptionInputValue,
-            tags = if (tagsInputValue.isNotBlank()) {
-                tagsInputValue.split(",").map { Tag(it) }
-            } else emptyList(),
+            tags = parseTagTexts().map { Tag(it) },
             status = statusValue,
             nickname = nameValue,
         )
@@ -77,14 +75,15 @@ class DialogState {
         editTask = editTask?.copy(
             title = titleInputValue,
             description = descriptionInputValue,
-            tags = if (tagsInputValue.isNotBlank()) {
-                tagsInputValue.split(",").map { Tag(it) }
-            } else emptyList(),
+            tags = parseTagTexts().map { Tag(it) },
             status = statusValue,
             nickname = nameValue,
         )
         createdTask = editTask
     }
+
+    private fun parseTagTexts(): List<String> =
+        if (tagsInputValue.isNotBlank()) tagsInputValue.split(",") else emptyList()
 
     fun onTaskDelete(){
         val task = editTask ?: return
