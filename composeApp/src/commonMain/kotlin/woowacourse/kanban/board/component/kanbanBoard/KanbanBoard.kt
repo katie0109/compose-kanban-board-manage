@@ -9,19 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,17 +22,13 @@ import androidx.compose.ui.window.Dialog
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import woowacourse.kanban.board.component.dialog.TaskCreateDialog
-import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.domain.Tag
+import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.state.DialogMode
-import woowacourse.kanban.board.state.DialogState
 import woowacourse.kanban.board.state.KanbanBoardState
 import woowacourse.kanban.board.state.SnackBarState
 import woowacourse.kanban.board.theme.StatusColor
-import java.awt.SystemColor.text
-import javax.swing.JColorChooser.showDialog
 
 @Composable
 fun KanbanBoard(
@@ -159,24 +148,13 @@ private fun DialogIfVisible(
 
                 },
                 onDeleteTask = {
-                    task ->
-                    if (task.status == Status.REVIEW || task.status == Status.DONE) {
-                        state.showDialog = false
-                        state.dialogState.resetDialog()
-                        state.snackBarState = SnackBarState(
-                            isVisible = true,
-                            text = "해당 상태에서는 태스크 삭제가 불가합니다."
-                        )
-                    }
-                    else{
-                        onDeleteTask(task);
-                        state.showDialog = false
-                        state.dialogState.resetDialog()
-                        state.snackBarState = SnackBarState(
-                            isVisible = true,
-                            text = "태스크가 삭제되었습니다."
-                        )
-                    }
+                    task -> onDeleteTask(task)
+                    state.showDialog = false
+                    state.dialogState.resetDialog()
+                    state.snackBarState = SnackBarState(
+                        isVisible = true,
+                        text = "태스크가 삭제되었습니다."
+                    )
                 },
                 onDismissRequest = {
                     state.showDialog = false
@@ -196,7 +174,7 @@ private fun CreateAlertSnackBarVisible(
 ){
     LaunchedEffect(state.snackBarState.isVisible) {
         if (state.snackBarState.isVisible) {
-            delay(3000.milliseconds)
+            delay(7000.milliseconds)
             state.snackBarState = SnackBarState(isVisible = false)
         }
     }
