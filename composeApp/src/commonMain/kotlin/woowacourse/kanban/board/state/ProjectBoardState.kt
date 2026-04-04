@@ -2,11 +2,10 @@ package woowacourse.kanban.board.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import woowacourse.kanban.board.domain.KanbanBoard
-import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
+import woowacourse.kanban.board.domain.Task
 
 class ProjectBoardState {
     var kanbanBoards by mutableStateOf(
@@ -36,12 +35,27 @@ class ProjectBoardState {
         updateSelectedBoard { it.updateTask(task) }
     }
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(task: Task): Boolean {
+        val beforeBoard = selectedKanbanBoardTask
         updateSelectedBoard { it.deleteTask(task) }
+        val afterBoard = selectedKanbanBoardTask
+
+        return beforeBoard != afterBoard
     }
 
-    fun moveTaskStatus(taskId: String, targetStatus: Status) {
+    fun moveTaskStatus(taskId: String, targetStatus: Status): MoveTaskStatusResult {
+        val beforeBoard = selectedKanbanBoardTask
+        val sourceTask = beforeBoard.taskList.find { it.id == taskId }
+
         updateSelectedBoard { it.moveTaskStatus(taskId, targetStatus) }
+        val afterBoard = selectedKanbanBoardTask
+
+        return resolveMoveResult(
+            beforeBoard = beforeBoard,
+            afterBoard = afterBoard,
+            sourceTask = sourceTask,
+            targetStatus = targetStatus,
+        )
     }
 
     private fun updateSelectedBoard(update: (KanbanBoard) -> KanbanBoard) {

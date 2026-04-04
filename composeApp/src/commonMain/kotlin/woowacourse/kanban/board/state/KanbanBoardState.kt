@@ -45,6 +45,42 @@ class KanbanBoardState {
         resetDragState()
     }
 
+    fun onTaskCreated() {
+        showSnackBar("새로운 태스크가 생성되었습니다.")
+    }
+
+    fun onTaskEdited() {
+        showSnackBar("태스크가 수정되었습니다.")
+    }
+
+    fun onTaskDeleted(isDeleted: Boolean) {
+        if (isDeleted) {
+            showSnackBar("태스크가 삭제되었습니다.")
+        }
+        else {
+            showSnackBar("해당 상태에서는 태스크 삭제가 불가합니다.")
+        }
+    }
+
+    fun onTaskMoveResult(result: MoveTaskStatusResult) {
+        when (result) {
+            MoveTaskStatusResult.SUCCESS -> showSnackBar("태스크가 이동되었습니다.")
+            MoveTaskStatusResult.ASSIGNEE_REQUIRED -> showSnackBar("담당자를 지정해야 상태를 옮길 수 있습니다.")
+            MoveTaskStatusResult.INVALID_TRANSITION -> showSnackBar("해당 상태로 옮길 수 없습니다.")
+        }
+    }
+
+    fun hideSnackBar() {
+        snackBarState = SnackBarState(isVisible = false)
+    }
+
+    private fun showSnackBar(message: String) {
+        snackBarState = SnackBarState(
+            isVisible = true,
+            text = message,
+        )
+    }
+
     private fun resetDragState() {
         currentDragPosition = null
         draggedTaskId = null

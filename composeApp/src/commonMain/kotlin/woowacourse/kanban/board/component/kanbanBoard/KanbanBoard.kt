@@ -27,7 +27,7 @@ import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.state.KanbanBoardState
-import woowacourse.kanban.board.state.SnackBarState
+import woowacourse.kanban.board.state.MoveTaskStatusResult
 import woowacourse.kanban.board.theme.StatusColor
 
 @Composable
@@ -36,8 +36,8 @@ fun KanbanBoard(
     modifier: Modifier = Modifier,
     onAddTask: (Task) -> Unit = {},
     onEditTask: (Task) -> Unit = {},
-    onDeleteTask: (Task) -> Unit = {},
-    onMoveTaskStatus: (String, Status) -> Unit = { _, _ -> },
+    onDeleteTask: (Task) -> Boolean = { true },
+    onMoveTaskStatus: (String, Status) -> MoveTaskStatusResult = { _, _ -> MoveTaskStatusResult.SUCCESS },
 ) {
     val statuses = remember { Status.entries }
     val names = remember { listOf("다이노", "페임스") }
@@ -80,7 +80,12 @@ fun KanbanBoard(
                             state.draggedTaskNickname = task.nickname
                         },
                         onTaskDragChange = { pos -> state.currentDragPosition = pos },
-                        onTaskDragEnd = { state.onTaskDragEnd(state, onMoveTaskStatus) },
+                        onTaskDragEnd = {
+                            state.onTaskDragEnd(state) { taskId, targetStatus ->
+                                val result = onMoveTaskStatus(taskId, targetStatus)
+                                state.onTaskMoveResult(result)
+                            }
+                        },
                         onTaskDragCancel = {
                             state.currentDragPosition = null
                             state.draggedTaskId = null
@@ -119,8 +124,9 @@ private fun DialogIfVisible(
     names:List<String>,
     onAddTask: (Task) -> Unit,
     onEditTask: (Task) -> Unit,
-    onDeleteTask: (Task) -> Unit,
+    onDeleteTask: (Task) -> Boolean,
 ){
+
     if (state.showDialog) {
         Dialog(
             onDismissRequest = { state.showDialog = false },
@@ -129,32 +135,17 @@ private fun DialogIfVisible(
                 statuses = statuses,
                 names = names,
                 onTaskCreate = {
-                    task -> onAddTask(task);
-                    state.showDialog = false
-                    state.dialogState.resetDialog()
-                    state.snackBarState = SnackBarState(
-                        isVisible = true,
-                        text = "새로운 태스크가 생성되었습니다."
-                    )
+                    task -> onAddTask(task)
+                    closeDialogAndShowSnackBar(state) { state.onTaskCreated() }
                 },
                 onEditTask = {
-                    task -> onEditTask(task);
-                    state.showDialog = false
-                    state.dialogState.resetDialog()
-                    state.snackBarState = SnackBarState(
-                        isVisible = true,
-                        text = "태스크가 수정되었습니다."
-                    )
+                    task -> onEditTask(task)
+                    closeDialogAndShowSnackBar(state) { state.onTaskEdited() }
 
                 },
                 onDeleteTask = {
-                    task -> onDeleteTask(task)
-                    state.showDialog = false
-                    state.dialogState.resetDialog()
-                    state.snackBarState = SnackBarState(
-                        isVisible = true,
-                        text = "태스크가 삭제되었습니다."
-                    )
+                    task -> val isDeleted = onDeleteTask(task)
+                    closeDialogAndShowSnackBar(state) { state.onTaskDeleted(isDeleted) }
                 },
                 onDismissRequest = {
                     state.showDialog = false
@@ -175,7 +166,7 @@ private fun CreateAlertSnackBarVisible(
     LaunchedEffect(state.snackBarState.isVisible) {
         if (state.snackBarState.isVisible) {
             delay(7000.milliseconds)
-            state.snackBarState = SnackBarState(isVisible = false)
+            state.hideSnackBar()
         }
     }
     if (state.snackBarState.isVisible) CreateAlertSnackBar(
@@ -185,8 +176,14 @@ private fun CreateAlertSnackBarVisible(
             .padding(start = 16.dp)
             .size(width = 344.dp, height = 48.dp),
         text = state.snackBarState.text,
-        onClick = { state.snackBarState = SnackBarState(isVisible = false) },
+        onClick = { state.hideSnackBar() },
     )
+}
+
+private fun closeDialogAndShowSnackBar( state: KanbanBoardState, onSnackBar: () -> Unit) {
+    state.showDialog = false
+    state.dialogState.resetDialog()
+    onSnackBar()
 }
 
 @Preview(showBackground = true, widthDp = 1200, heightDp = 800)
