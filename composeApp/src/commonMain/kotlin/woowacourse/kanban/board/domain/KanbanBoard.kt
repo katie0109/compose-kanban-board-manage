@@ -19,8 +19,11 @@ data class KanbanBoard(
         return copy(taskList = updatedTaskList)
     }
 
-    fun deleteTask(deleteTask: Task): KanbanBoard =
-        copy(taskList = taskList.filterNot { task -> task.id == deleteTask.id })
+    fun deleteTask(deleteTask: Task): KanbanBoard {
+        if (!deleteTask.canBeDeleted()) return this
+
+        return copy(taskList = taskList.filterNot { task -> task.id == deleteTask.id })
+    }
 
     fun moveTaskStatus(taskId: String, targetStatus: Status): KanbanBoard {
         val targetIndex = taskList.indexOfFirst { it.id == taskId }
@@ -28,6 +31,8 @@ data class KanbanBoard(
 
         val targetTask = taskList[targetIndex]
         if (targetTask.status == targetStatus) return this
+
+        if (!targetTask.canMoveToWithAssigneeRule(targetStatus)) return this
 
         val updatedTaskList = taskList.map { task ->
             if (task.id == taskId) task.copy(status = targetStatus) else task
