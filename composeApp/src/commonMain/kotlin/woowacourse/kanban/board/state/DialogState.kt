@@ -54,8 +54,8 @@ class DialogState {
         return nameValue == name
     }
 
-    fun selectMode(mode: DialogMode){
-        when(mode){
+    fun selectMode() {
+        when (mode) {
             DialogMode.CREATE -> onTaskCreate()
             DialogMode.EDIT -> onTaskEdit()
         }

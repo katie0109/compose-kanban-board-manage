@@ -95,7 +95,7 @@ class DialogStateTest {
         dialogState.titleInputValue = TEST_TITLE
         dialogState.nameValue = TEST_NAME
 
-        dialogState.selectMode(DialogMode.CREATE)
+        dialogState.selectMode()
 
         assertThat(dialogState.createdTask).isNotNull()
         assertThat(dialogState.createdTask?.title).isEqualTo(TEST_TITLE)
@@ -113,7 +113,7 @@ class DialogStateTest {
         dialogState.editTask = originalTask
         dialogState.titleInputValue = "수정됨"
 
-        dialogState.selectMode(DialogMode.EDIT)
+        dialogState.selectMode()
 
         assertThat(dialogState.editTask?.title).isEqualTo("수정됨")
     }

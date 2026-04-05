@@ -47,7 +47,7 @@ fun TaskCreateDialog(
         mode = dialogState.mode,
         isCreateError = isCreateError,
         onCancel = onDismissRequest,
-        onSubmit = { dialogState.selectMode(dialogState.mode) },
+        onSubmit = { dialogState.selectMode() },
         onDelete = { dialogState.onTaskDelete() },
     )
 
