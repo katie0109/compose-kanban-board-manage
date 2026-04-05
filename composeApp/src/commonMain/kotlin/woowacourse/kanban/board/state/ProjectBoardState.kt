@@ -32,7 +32,14 @@ class ProjectBoardState {
     }
 
     fun editTask(task: Task) {
+        val beforeBoard = selectedKanbanBoardTask
+        val currentTask = beforeBoard.taskList.find { it.id == task.id } ?: return
+
         updateSelectedBoard { it.updateTask(task) }
+
+        if (currentTask.status != task.status) {
+            updateSelectedBoard { it.moveTaskStatus(task.id, task.status) }
+        }
     }
 
     fun deleteTask(task: Task): Boolean {

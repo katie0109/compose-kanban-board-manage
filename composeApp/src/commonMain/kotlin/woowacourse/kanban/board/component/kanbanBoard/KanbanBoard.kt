@@ -25,9 +25,9 @@ import woowacourse.kanban.board.component.dialog.layout.TaskCreateDialog
 import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Task
-import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.state.KanbanBoardState
 import woowacourse.kanban.board.state.MoveTaskStatusResult
+import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.theme.StatusColor
 
 @Composable
