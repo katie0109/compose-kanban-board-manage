@@ -39,6 +39,7 @@ fun TaskCreateDialog(
     onEditTask: (Task) -> Unit,
     onDeleteTask: (Task) -> Unit,
     onDismissRequest: () -> Unit,
+    onShowSnackbar: (String) -> Unit = {},
     dialogState: DialogState,
 ) {
     val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
@@ -72,6 +73,14 @@ fun TaskCreateDialog(
         if (task != null) {
             onDeleteTask(task)
             dialogState.deleteTask = null
+        }
+    }
+
+    LaunchedEffect(dialogState.snackbarMessage) {
+        val message = dialogState.snackbarMessage
+        if (message != null) {
+            onShowSnackbar(message)
+            dialogState.resetSnackbarMessage()
         }
     }
 

@@ -127,34 +127,37 @@ private fun DialogIfVisible(
     onDeleteTask: (Task) -> Boolean,
 ){
 
-    if (state.showDialog) {
-        Dialog(
-            onDismissRequest = { state.showDialog = false },
-        ) {
-            TaskCreateDialog(
-                statuses = statuses,
-                names = names,
-                onTaskCreate = {
-                    task -> onAddTask(task)
-                    closeDialogAndShowSnackBar(state) { state.onTaskCreated() }
-                },
-                onEditTask = {
-                    task -> onEditTask(task)
-                    closeDialogAndShowSnackBar(state) { state.onTaskEdited() }
+     if (state.showDialog) {
+         Dialog(
+             onDismissRequest = { state.showDialog = false },
+         ) {
+             TaskCreateDialog(
+                 statuses = statuses,
+                 names = names,
+                 onTaskCreate = {
+                     task -> onAddTask(task)
+                     closeDialogAndShowSnackBar(state) { state.onTaskCreated() }
+                 },
+                 onEditTask = {
+                     task -> onEditTask(task)
+                     closeDialogAndShowSnackBar(state) { state.onTaskEdited() }
 
-                },
-                onDeleteTask = {
-                    task -> val isDeleted = onDeleteTask(task)
-                    closeDialogAndShowSnackBar(state) { state.onTaskDeleted(isDeleted) }
-                },
-                onDismissRequest = {
-                    state.showDialog = false
-                    state.dialogState.resetDialog()
-                },
-                dialogState = state.dialogState,
-            )
-        }
-    }
+                 },
+                 onDeleteTask = {
+                     task -> val isDeleted = onDeleteTask(task)
+                     closeDialogAndShowSnackBar(state) { state.onTaskDeleted(isDeleted) }
+                 },
+                 onShowSnackbar = { message ->
+                     state.showSnackBar(message)
+                 },
+                 onDismissRequest = {
+                     state.showDialog = false
+                     state.dialogState.resetDialog()
+                 },
+                 dialogState = state.dialogState,
+             )
+         }
+     }
 }
 
 //스낵바 표시 여부 책임 분리

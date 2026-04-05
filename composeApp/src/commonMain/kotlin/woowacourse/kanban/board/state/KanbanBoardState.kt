@@ -74,7 +74,7 @@ class KanbanBoardState {
         snackBarState = SnackBarState(isVisible = false)
     }
 
-    private fun showSnackBar(message: String) {
+    fun showSnackBar(message: String) {
         snackBarState = SnackBarState(
             isVisible = true,
             text = message,

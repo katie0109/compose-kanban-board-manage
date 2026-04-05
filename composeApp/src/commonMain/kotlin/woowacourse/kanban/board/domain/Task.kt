@@ -11,16 +11,22 @@ data class Task(
     val nickname: String,
 ) {
     init {
-        require(!isTitleError(title)) { "[ERROR] 제목이 비어있으면 안됩니다." }
-        require(!isTagsError(tags)) { "[ERROR] 태그의 개수가 너무 많습니다." }
+        require(!isTitleError(title)) { TITLE_ERROR_MESSAGE }
+        require(!isTagsError(tags)) { TAGS_ERROR_MESSAGE }
+        require(isAssigneeValidFor(status, nickname)) { ASSIGNEE_ERROR_MESSAGE }
     }
 
     companion object {
         const val MAX_TAGS_SIZE = 5
         const val UNASSIGNED_NICKNAME = "없음"
+        const val TITLE_ERROR_MESSAGE = "[ERROR] 제목이 비어있으면 안됩니다."
+        const val TAGS_ERROR_MESSAGE = "[ERROR] 태그의 개수가 너무 많습니다."
+        const val ASSIGNEE_ERROR_MESSAGE = "[ERROR] To Do 상태만 담당자 미지정이 가능합니다."
 
         fun isTitleError(title: String): Boolean = title.isBlank()
         fun isTagsError(tags: List<Tag>): Boolean = tags.size > MAX_TAGS_SIZE
+        fun isAssigneeValidFor(status: Status, nickname: String): Boolean =
+            status == Status.TODO || nickname != UNASSIGNED_NICKNAME
     }
 
     fun canMoveTo(targetStatus: Status): Boolean {

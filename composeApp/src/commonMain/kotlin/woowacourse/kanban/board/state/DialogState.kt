@@ -2,7 +2,6 @@ package woowacourse.kanban.board.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.domain.Status
@@ -19,6 +18,7 @@ class DialogState {
     var isTagsError by mutableStateOf(false)
     var createdTask by mutableStateOf<Task?>(null)
     var mode by mutableStateOf(DialogMode.CREATE)
+    var snackbarMessage by mutableStateOf<String?>(null)
 
     var editTask by mutableStateOf<Task?>(null)
     var deleteTask by mutableStateOf<Task?>(null)
@@ -62,24 +62,46 @@ class DialogState {
     }
 
     fun onTaskCreate() {
-        createdTask = Task(
-            title = titleInputValue,
-            description = descriptionInputValue,
-            tags = parseTagTexts().map { Tag(it) },
-            status = statusValue,
-            nickname = nameValue,
-        )
+        runCatching {
+            Task(
+                title = titleInputValue,
+                description = descriptionInputValue,
+                tags = parseTagTexts().map { Tag(it) },
+                status = statusValue,
+                nickname = nameValue,
+            )
+        }.onSuccess {
+            createdTask = it
+        }.onFailure { error ->
+            snackbarMessage = validationMessage(error)
+        }
     }
 
     fun onTaskEdit(){
-        editTask = editTask?.copy(
-            title = titleInputValue,
-            description = descriptionInputValue,
-            tags = parseTagTexts().map { Tag(it) },
-            status = statusValue,
-            nickname = nameValue,
-        )
-        createdTask = editTask
+        val currentTask = editTask ?: return
+        runCatching {
+            currentTask.copy(
+                title = titleInputValue,
+                description = descriptionInputValue,
+                tags = parseTagTexts().map { Tag(it) },
+                status = statusValue,
+                nickname = nameValue,
+            )
+        }.onSuccess {
+            editTask = it
+            createdTask = it
+        }.onFailure { error ->
+            snackbarMessage = validationMessage(error)
+        }
+    }
+
+    private fun validationMessage(error: Throwable): String? {
+        return when (error.message) {
+            Task.TITLE_ERROR_MESSAGE -> null
+            Task.TAGS_ERROR_MESSAGE -> null
+            Task.ASSIGNEE_ERROR_MESSAGE -> "이 상태에서는 담당자를 지정해야 합니다."
+            else -> null
+        }
     }
 
     private fun parseTagTexts(): List<String> =
@@ -112,6 +134,11 @@ class DialogState {
         editTask = null
         deleteTask = null
         mode = DialogMode.CREATE
+        snackbarMessage = null
+    }
+
+    fun resetSnackbarMessage() {
+        snackbarMessage = null
     }
 }
 
