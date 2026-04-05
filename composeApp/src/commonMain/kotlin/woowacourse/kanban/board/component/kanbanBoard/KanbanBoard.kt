@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
-import woowacourse.kanban.board.component.dialog.TaskCreateDialog
+import woowacourse.kanban.board.component.dialog.layout.TaskCreateDialog
 import woowacourse.kanban.board.domain.KanbanBoard
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Task

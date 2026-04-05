@@ -1,4 +1,4 @@
-package woowacourse.kanban.board.component.dialog
+package woowacourse.kanban.board.component.dialog.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,14 +11,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import woowacourse.kanban.board.component.dialog.selection.CoachButton
+import woowacourse.kanban.board.component.dialog.selection.CommonButtonColumn
+import woowacourse.kanban.board.component.dialog.input.CommonTextColumn
+import woowacourse.kanban.board.component.dialog.action.FooterAction
+import woowacourse.kanban.board.component.dialog.action.FooterRow
+import woowacourse.kanban.board.component.dialog.selection.StatusButton
+import woowacourse.kanban.board.component.dialog.action.cancelFooterAction
+import woowacourse.kanban.board.component.dialog.action.createFooterAction
+import woowacourse.kanban.board.component.dialog.action.deleteFooterAction
+import woowacourse.kanban.board.component.dialog.action.editFooterAction
 import woowacourse.kanban.board.domain.Status
 import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.state.DialogMode
@@ -36,6 +42,13 @@ fun TaskCreateDialog(
     dialogState: DialogState,
 ) {
     val isCreateError = dialogState.isTitleError || dialogState.isTagsError || dialogState.titleInputValue.isBlank()
+    val footerActions = footerActions(
+        mode = dialogState.mode,
+        isCreateError = isCreateError,
+        onCancel = onDismissRequest,
+        onSubmit = { dialogState.selectMode(dialogState.mode) },
+        onDelete = { dialogState.onTaskDelete() },
+    )
 
     val filteredNames = if (dialogState.statusValue == Status.TODO) {
         listOf("없음") + names
@@ -122,14 +135,30 @@ fun TaskCreateDialog(
                 CoachButton(name = name, isSelected = isSelected, onClick = onClick)
             }
             HorizontalDivider()
-            FooterRow(
-                onCancel = onDismissRequest,
-                onCreate = { dialogState.selectMode(dialogState.mode) },
-                onDelete = { dialogState.onTaskDelete() },
-                isCreateError = isCreateError,
-                mode = dialogState.mode,
-            )
+            FooterRow(actions = footerActions)
         }
+    }
+}
+
+private fun footerActions(
+    mode: DialogMode,
+    isCreateError: Boolean,
+    onCancel: () -> Unit,
+    onSubmit: () -> Unit,
+    onDelete: () -> Unit,
+): List<FooterAction> {
+    val isSubmitEnabled = !isCreateError
+    return when (mode) {
+        DialogMode.CREATE -> listOf(
+            cancelFooterAction(onClick = onCancel),
+            createFooterAction(onClick = onSubmit, isEnabled = isSubmitEnabled),
+        )
+
+        DialogMode.EDIT -> listOf(
+            cancelFooterAction(onClick = onCancel),
+            editFooterAction(onClick = onSubmit, isEnabled = isSubmitEnabled),
+            deleteFooterAction(onClick = onDelete, isEnabled = isSubmitEnabled),
+        )
     }
 }
 

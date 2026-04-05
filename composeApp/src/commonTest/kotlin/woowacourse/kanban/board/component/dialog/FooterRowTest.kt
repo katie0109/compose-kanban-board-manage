@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
 import org.assertj.core.api.Assertions.assertThat
+import woowacourse.kanban.board.component.dialog.action.FooterRow
 import woowacourse.kanban.board.state.DialogMode
 
 @OptIn(ExperimentalTestApi::class)
@@ -25,7 +26,7 @@ class FooterRowTest {
                 isCreateError = isCreateError,
                 mode = DialogMode.CREATE,
 
-            )
+                )
         }
 
         onNodeWithText("생성").assertIsNotEnabled()
@@ -44,7 +45,7 @@ class FooterRowTest {
                 isCreateError = isCreateError,
                 mode = DialogMode.CREATE,
 
-            )
+                )
         }
 
         onNodeWithText("생성").performClick()

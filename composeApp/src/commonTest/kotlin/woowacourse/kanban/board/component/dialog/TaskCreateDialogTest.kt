@@ -4,9 +4,8 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
 import kotlin.test.Test
-import org.assertj.core.api.Assertions.assertThat
+import woowacourse.kanban.board.component.dialog.layout.TaskCreateDialog
 import woowacourse.kanban.board.domain.Status
-import woowacourse.kanban.board.domain.Task
 import woowacourse.kanban.board.state.DialogMode
 import woowacourse.kanban.board.state.DialogState
 
